@@ -1,0 +1,48 @@
+name: reversesearchdev
+version: 1.0.1
+description: reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作
+hermes_requires: '>=0.16.0'
+author: reversesearch team
+license: internal
+env_requires:
+- name: XIAOMI_API_KEY
+  description: 小米 Mimo 模型 API Key
+  required: true
+- name: XIAOMI_BASE_URL
+  description: 小米 Mimo API Base URL
+  required: false
+  default: https://token-plan-cn.xiaomimimo.com/v1
+- name: FEISHU_APP_ID
+  description: 飞书应用 App ID（Gateway 接入）
+  required: true
+- name: FEISHU_APP_SECRET
+  description: 飞书应用 App Secret
+  required: true
+- name: FEISHU_CONNECTION_MODE
+  description: 飞书连接模式
+  required: false
+  default: websocket
+- name: FEISHU_DM_POLICY
+  description: 飞书私聊策略
+  required: false
+  default: pairing
+- name: FEISHU_GROUP_POLICY
+  description: 飞书群聊策略
+  required: false
+  default: open
+- name: FEISHU_ALLOW_ALL_USERS
+  description: 是否允许所有飞书用户
+  required: false
+  default: 'true'
+- name: FEISHU_DOMAIN
+  description: 飞书域名
+  required: false
+  default: feishu
+- name: OPENAI_API_KEY
+  description: OpenAI 兼容 API Key（备用）
+  required: false
+distribution_owned:
+- SOUL.md
+- config.yaml
+- distribution.yaml
+- skills/

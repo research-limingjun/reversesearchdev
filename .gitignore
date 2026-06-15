@@ -1,0 +1,67 @@
+# Credentials & secrets
+.env
+.env.*
+!.env.EXAMPLE
+auth.json
+auth.lock
+
+# Databases & runtime state
+state.db
+state.db-shm
+state.db-wal
+hermes_state.db
+response_store.db
+response_store.db-shm
+response_store.db-wal
+gateway.pid
+gateway.lock
+gateway_state.json
+processes.json
+active_profile
+.update_check
+errors.log
+.hermes_history
+.tirith-install-failed
+
+# User data (never share)
+memories/
+sessions/
+logs/
+plans/
+workspace/
+home/
+sandboxes/
+pairing/
+hooks/
+
+# Caches
+cache/
+*_cache/
+image_cache/
+audio_cache/
+document_cache/
+browser_screenshots/
+checkpoints/
+backups/
+models_dev_cache.json
+feishu_seen_message_ids.json
+channel_directory.json
+
+# Infrastructure (machine-local)
+bin/
+ui-desktop/
+platforms/
+hermes-agent/
+.worktrees/
+profiles/
+node_modules/
+
+# User customization namespace
+local/
+
+# Skills: sync all content, exclude machine-local sync metadata
+skills/.hub/
+skills/.bundled_manifest
+
+# macOS
+.DS_Store
