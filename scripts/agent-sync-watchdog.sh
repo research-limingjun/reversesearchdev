@@ -10,6 +10,7 @@ MANIFEST="$PROFILE_DIR/distribution.yaml"
 PUBLISH_CONFIG="$PROFILE_DIR/publish.config"
 BRANCH="${BRANCH:-main}"
 GIT_REMOTE=""
+CONFLICT_STRATEGY="${CONFLICT_STRATEGY:-distribution_branch}"
 
 cd "$PROFILE_DIR"
 mkdir -p "$PROFILE_DIR/local"
@@ -21,6 +22,30 @@ _load_publish_config() {
   fi
   BRANCH="${BRANCH:-main}"
   GIT_REMOTE="${REMOTE:-}"
+  CONFLICT_STRATEGY="${CONFLICT_STRATEGY:-distribution_branch}"
+}
+
+_clear_conflict_state() {
+  python3 - "$STATE_FILE" <<'PY'
+import json, sys
+from pathlib import Path
+
+p = Path(sys.argv[1])
+if not p.is_file():
+    raise SystemExit(0)
+try:
+    data = json.loads(p.read_text(encoding="utf-8"))
+except Exception:
+    raise SystemExit(0)
+for key in (
+    "pending_conflict_branch",
+    "pending_conflict_local_sha",
+    "pending_conflict_remote_sha",
+    "pending_conflict_at",
+):
+    data.pop(key, None)
+p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+PY
 }
 
 _resolve_remote_url() {
@@ -243,6 +268,15 @@ if [[ "$LOCAL_NEEDS_PUBLISH" == true ]] && [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; the
   if [[ -z "$LOCAL_DESC" ]]; then
     LOCAL_DESC="已 commit 未 push（领先 ${LOCAL_AHEAD} 个提交）"
   fi
+  if [[ "${CONFLICT_STRATEGY:-distribution_branch}" == "distribution_branch" ]]; then
+    export CONFLICT_LOCAL_DESC="$LOCAL_DESC"
+    export CONFLICT_LOCAL_HEAD="$LOCAL_HEAD"
+    export CONFLICT_REMOTE_HEAD="$REMOTE_HEAD"
+    export CONFLICT_REMOTE_AHEAD="$REMOTE_AHEAD"
+    chmod +x "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
+    "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
+    exit 0
+  fi
   cat <<EOF
 [${PROFILE_NAME}] 配置同步冲突，需人工介入
 本机未发布: ${LOCAL_DESC}
@@ -282,6 +316,7 @@ EOF
   REMOTE_SHA="$(_remote_branch_sha "$REMOTE_URL")"
   NEW_VERSION="$(_read_version)"
   _write_state "$REMOTE_SHA" "$NEW_VERSION" "publish"
+  _clear_conflict_state
 
   if [[ -n "$LOCAL_DIRTY" ]]; then
     PUBLISH_FILES="$LOCAL_DIRTY"
@@ -308,6 +343,7 @@ if [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; then
   REMOTE_SHA="$(_remote_branch_sha "$REMOTE_URL")"
   NEW_VERSION="$(_read_version)"
   _write_state "$REMOTE_SHA" "$NEW_VERSION" "pull"
+  _clear_conflict_state
 
   cat <<EOF
 [${PROFILE_NAME}] 数字人配置已自动更新至 v${NEW_VERSION}

@@ -13,7 +13,7 @@ description: |
 
 - **本机有未发布改动**且远端无新提交 → 自动 `./publish.sh` 推送
 - **远端有新版本**且本机干净 → `profile update` 拉取
-- **双方都有新改动**（分叉）→ 飞书告警，需人工介入
+- **双方都有新改动**（分叉）→ 自动推 `distribution/Conflict_*` 分支 + 飞书五步操作通知
 - **均无变化** → 静默
 
 `.env`、`memories/` 不会被覆盖。
@@ -65,14 +65,27 @@ description: |
 | 本地与远端均无变化 | 静默退出 | 不发 |
 | 仅本机有未发布改动 | 自动 `./publish.sh` | 发「已自动发布至 vX.X.X」+ 变更文件 |
 | 仅远端有新提交 | `profile update -y` | 发「已自动更新至 vX.X.X」 |
-| 本机与远端均有新改动（分叉） | 不 pull、不 push | 发「需人工介入」+ 操作建议 |
+| 本机与远端均有新改动（分叉） | 推 `distribution/Conflict_*` 分支，main 恢复干净 | 发【Distribution】冲突通知 + GitHub 链接 |
 | publish / update 失败 | 不更新 state | 发错误摘要 |
 
 状态文件：`local/dist_sync_state.json`（本机专用，不入 git）
 
 ## 风险说明
 
-**所有安装了该 cron 的机器均会尝试自动 publish。** 若队友本机意外修改了 `SOUL.md`、`skills/` 等 `distribution_owned` 文件，12h 内可能被自动提交并推送到共享仓库。冲突场景依赖飞书告警，需人工 `git pull --rebase` 或 `./publish.sh` 解决。
+**所有安装了该 cron 的机器均会尝试自动 publish。** 冲突时会推 `distribution/Conflict_*` 分支并发飞书五步通知。
+
+## 冲突处理
+
+`CONFLICT_STRATEGY=distribution_branch`（默认）时自动 WIP commit → push 冲突分支 → reset 本机 main。
+
+```bash
+git fetch && git checkout distribution/Conflict_main_<...>
+git pull origin main --no-rebase   # Diff 解决 → push → GitHub 合并 PR
+```
+
+备选：`git worktree add ~/reversesearchdev-merge distribution/Conflict_main_<...>`
+
+`CONFLICT_STRATEGY=alert_only` 恢复仅文字告警。
 
 ## CLI 备用（Power User）
 
