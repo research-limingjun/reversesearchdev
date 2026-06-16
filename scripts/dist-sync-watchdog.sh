@@ -128,12 +128,14 @@ for line in text.splitlines():
     if line.strip().startswith("distribution_owned:"):
         in_owned = True
         continue
-    if in_owned:
-        if line and not line[0].isspace():
-            break
-        m = re.match(r"\s*-\s+(.+)", line)
-        if m:
-            owned.append(m.group(1).strip().strip("'\""))
+    if not in_owned:
+        continue
+    m = re.match(r"^-\s+(.+)", line) or re.match(r"^\s+-\s+(.+)", line)
+    if m:
+        owned.append(m.group(1).strip().strip("'\""))
+        continue
+    if line.strip():
+        break
 
 for p in owned:
     out = subprocess.run(

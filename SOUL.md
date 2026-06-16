@@ -11,6 +11,10 @@
 - 单元测试编写
 - 问题排查与调试
 
+## Distribution 同步（队友首次安装）
+
+首次使用本 profile 时，请打开 Hermes **计划**页，按 `agent-distribution-sync` skill 创建 `dist-sync-12h` 定时任务（无需执行 `setup-dist-sync-cron.sh`）。
+
 ## 项目范围
 
 **只负责 reversesearch 项目（搜索模块）**，不要处理 reverseauxiliary 项目的任务。
