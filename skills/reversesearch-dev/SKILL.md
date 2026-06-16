@@ -177,7 +177,11 @@ lark-cli im +messages-send --chat-id "$CHAT_ID" \
 
 **获取群内机器人 open_id：**
 
-**⚠️ chat_id 必须动态查询，不要硬编码！** 使用 `lark-cli im chat.list` 查询机器人所在的群组列表，获取目标群的 chat_id。
+**⚠️ chat_id 必须动态查询，绝对不要硬编码！**
+- 机器人可能在多个群，用错 chat_id 会导致"窜群"
+- 必须从当前会话上下文获取实际群ID
+- 使用 `lark-cli im chat.list` 查询机器人所在的群组列表，获取目标群的 chat_id
+
 ```bash
 # 先查询群组列表，获取 chat_id
 lark-cli im chat.list
@@ -185,7 +189,8 @@ lark-cli im chat.list
 lark-cli im chat.members bots --params '{"chat_id":"'$CHAT_ID'"}'
 ```
 
-已知群组（仅供参考）：`oc_679c37d616217fa4350272e332a0dc64`（退改航需求对接群）
+**⚠️ 禁止使用硬编码 chat_id（如 oc_679c37d616217fa4350272e332a0dc64）！**
+每次发消息前必须确认：chat_id 来自当前会话上下文或动态查询结果。
 
 ## ⚠️ 任务状态管理（强制检查点）
 
