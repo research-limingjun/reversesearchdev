@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Register (or refresh) the 12h distribution sync cron job for reversesearchdev.
+# CLI 备用：注册 12h distribution 同步 cron（no-agent + feishu）。
+# 推荐方式：Hermes「计划」页按 agent-distribution-sync skill 手动创建任务。
 set -euo pipefail
 
 PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
