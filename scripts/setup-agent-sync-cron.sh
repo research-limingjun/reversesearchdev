@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# CLI 备用：注册 12h distribution 同步 cron（no-agent + feishu）。
+# CLI 备用：注册 12h distribution 双向同步 cron（no-agent + feishu）。
+# 上行：本机 distribution_owned 有改动 → 自动 publish；下行：远端有更新 → profile update。
 # 推荐方式：Hermes「计划」页按 agent-distribution-sync skill 手动创建任务。
 set -euo pipefail
 
 PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
 PROFILE_DIR="${HERMES_HOME:-$HOME/.hermes/profiles/$PROFILE_NAME}"
 JOB_NAME="agent-distribution-sync"
-SCRIPT_NAME="dist-sync-watchdog.sh"
+SCRIPT_NAME="agent-sync-watchdog.sh"
 JOBS_FILE="$PROFILE_DIR/cron/jobs.json"
 
 cd "$PROFILE_DIR"
@@ -21,6 +22,7 @@ p = Path(sys.argv[1])
 name = sys.argv[2]
 script = sys.argv[3]
 legacy_names = {name, "dist-sync-12h"}
+legacy_scripts = {script, "dist-sync-watchdog.sh"}
 if not p.is_file():
     sys.exit(0)
 try:
@@ -30,7 +32,7 @@ except Exception:
 if isinstance(jobs, dict):
     jobs = jobs.get("jobs", [])
 for job in jobs:
-    if job.get("name") in legacy_names or job.get("script") == script:
+    if job.get("name") in legacy_names or job.get("script") in legacy_scripts:
         print(job.get("id", ""))
         break
 PY

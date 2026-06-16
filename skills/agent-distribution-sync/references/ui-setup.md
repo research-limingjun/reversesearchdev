@@ -25,7 +25,7 @@
 
 | UI 字段 | 填写值 |
 |---------|--------|
-| 脚本 | `dist-sync-watchdog.sh` |
+| 脚本 | `agent-sync-watchdog.sh` |
 | 绑定技能 | 不添加 |
 | AI 提示词 | 留空 |
 
@@ -36,12 +36,21 @@
 | 绑定技能 | `agent-distribution-sync` |
 | AI 提示词 | 见 SKILL.md 路径 B |
 
+## 双向同步行为
+
+| 场景 | 飞书消息 |
+|------|----------|
+| 无变化 | 无（静默） |
+| 本机有改动、远端无新提交 | 「已自动发布至 vX」+ 变更文件列表 |
+| 远端有新版本、本机干净 | 「已自动更新至 vX」 |
+| 本机与远端均有改动 | 「配置同步冲突，需人工介入」 |
+
 ## 验证步骤
 
 1. 确认 gateway 运行：`hermes -p reversesearchdev gateway status`
 2. 创建任务后点「立即执行」
 3. 查看输出存档：`~/.hermes/profiles/reversesearchdev/cron/output/<job_id>/`
-4. 无更新时应无飞书消息；有更新或跳过时应收到对应文案
+4. 无变化时应无飞书消息；有发布/更新/冲突时应收到对应文案
 
 ## 常见错误
 
@@ -50,7 +59,8 @@
 | 任务从不触发 | gateway 未启动 | `hermes -p reversesearchdev gateway start` |
 | 执行失败 / 无飞书 | 飞书凭证或 channel 未配 | 检查 `.env` 与 `FEISHU_HOME_CHANNEL` |
 | 脚本找不到 | 配置档选错或脚本未同步 | 确认 profile 为 `reversesearchdev`，`profile update` 拉最新 |
-| 一直提示跳过同步 | 本机有未 publish 改动 | `./publish.sh` 或 `git stash` 后手动 update |
+| 冲突告警 | 本机与远端同时有未合并改动 | 按飞书提示 `publish` + `pull --rebase` 或 `stash` 后 update |
+| 自动发布失败 | 无 push 权限或 git 错误 | 检查 SSH key 与 `publish.config` 的 `REMOTE` |
 | profile update 失败 | Git 权限或 source 缺失 | 检查 `distribution.yaml` 的 `source:` 与 SSH/HTTPS 权限 |
 
 ## CLI 等效命令
@@ -58,10 +68,10 @@
 ```bash
 hermes -p reversesearchdev cron create "every 12h" \
   --no-agent \
-  --script dist-sync-watchdog.sh \
+  --script agent-sync-watchdog.sh \
   --deliver feishu \
   --name agent-distribution-sync \
   --profile reversesearchdev
 ```
 
-或运行仓库内：`./scripts/setup-dist-sync-cron.sh`
+或运行仓库内：`./scripts/setup-agent-sync-cron.sh`

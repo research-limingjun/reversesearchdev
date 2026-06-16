@@ -202,9 +202,41 @@ if [[ "$DRY_RUN" == true ]]; then
   exit 0
 fi
 
+_ensure_remote() {
+  if git remote get-url origin &>/dev/null; then
+    CURRENT_REMOTE=$(git remote get-url origin)
+    if [[ "$CURRENT_REMOTE" != "$REMOTE" ]]; then
+      git remote set-url origin "$REMOTE"
+    fi
+  else
+    git remote add origin "$REMOTE"
+  fi
+}
+
+_push_branch_and_tag() {
+  echo "→ Pushing to origin/$BRANCH"
+  git push -u origin "$BRANCH"
+
+  TAG="v${VERSION}"
+  git tag -f "$TAG"
+  git push origin "refs/tags/$TAG" --force
+}
+
 git add "${ADD_PATHS[@]}"
 
 if git diff --cached --quiet; then
+  _ensure_remote
+  git fetch origin "$BRANCH" --quiet 2>/dev/null || true
+  LOCAL_AHEAD=$(git rev-list --count "origin/$BRANCH..HEAD" 2>/dev/null || echo 0)
+  if [[ "$LOCAL_AHEAD" -gt 0 ]]; then
+    echo "→ Pushing $LOCAL_AHEAD unpushed commit(s) to origin/$BRANCH"
+    _push_branch_and_tag
+    echo ""
+    echo "Published reversesearchdev@${VERSION}"
+    echo "  hermes profile install $REMOTE --name reversesearchdev --alias -y"
+    echo "  hermes profile update reversesearchdev"
+    exit 0
+  fi
   echo "No changes to publish."
   exit 0
 fi
@@ -213,21 +245,8 @@ STAGED_COUNT=$(git diff --cached --name-only | wc -l | tr -d ' ')
 echo "→ Committing $STAGED_COUNT files as v${VERSION}"
 git commit -m "v${VERSION}: reversesearchdev distribution"
 
-if git remote get-url origin &>/dev/null; then
-  CURRENT_REMOTE=$(git remote get-url origin)
-  if [[ "$CURRENT_REMOTE" != "$REMOTE" ]]; then
-    git remote set-url origin "$REMOTE"
-  fi
-else
-  git remote add origin "$REMOTE"
-fi
-
-echo "→ Pushing to origin/$BRANCH"
-git push -u origin "$BRANCH"
-
-TAG="v${VERSION}"
-git tag -f "$TAG"
-git push origin "refs/tags/$TAG" --force
+_ensure_remote
+_push_branch_and_tag
 
 echo ""
 echo "Published reversesearchdev@${VERSION}"
