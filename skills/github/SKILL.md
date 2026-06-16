@@ -435,6 +435,59 @@ gh gist list
 
 ---
 
+## §6 — Codebase Inspection (pygount)
+
+Analyze repositories for lines of code, language breakdown, and code-vs-comment ratios.
+
+### Prerequisites
+
+```bash
+pip install --break-system-packages pygount
+```
+
+### Usage
+
+```bash
+cd /path/to/repo
+pygount --format=summary --folders-to-skip=".git,node_modules,venv,.venv,__pycache__,.cache,dist,build" .
+```
+
+**Always use `--folders-to-skip`** to exclude dependency/build directories.
+
+### Common Exclusions
+
+```bash
+# Python
+--folders-to-skip=".git,venv,.venv,__pycache__,.cache,dist,build,.tox,.eggs"
+
+# JavaScript/TypeScript
+--folders-to-skip=".git,node_modules,dist,build,.next,.cache,.turbo"
+
+# General
+--folders-to-skip=".git,node_modules,venv,.venv,__pycache__,.cache,dist,build,vendor,third_party"
+```
+
+### Filter by Language
+
+```bash
+pygount --suffix=py --format=summary .       # Python only
+pygount --suffix=py,yaml,yml --format=summary .
+```
+
+### JSON Output
+
+```bash
+pygount --format=json .
+```
+
+### Notes
+
+- Markdown shows 0 code lines (pygount classifies all as comments)
+- JSON files show low counts — use `wc -l` for accurate JSON line counts
+- Large monorepos: use `--suffix` to target specific languages
+
+---
+
 ## Quick Reference
 
 | Action | gh | curl endpoint |

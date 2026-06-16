@@ -1,8 +1,8 @@
 {
-  "last_report_path": "/Users/yyy/.hermes/profiles/reversesearchdev/logs/curator/20260604-073357",
+  "last_report_path": "/Users/apple/.hermes/profiles/reversesearchdev/logs/curator/20260616-012746",
   "last_run_at": "2026-06-16T01:27:46.455731+00:00",
-  "last_run_duration_seconds": 1.398781,
-  "last_run_summary": "auto: no changes",
+  "last_run_duration_seconds": 1719.026439,
+  "last_run_summary": "auto: no changes; llm: Now let me write the final summary:\n\n## Consolidation Summary\n\n**12 umbrella skills created/updated, 37 skills archived across 13 clusters.**\n\n### Clusters Processed\n\n| Cluster | Umbrella | Members Merged | Method |\n|---------|----------|--…\narchived 28 skill(s):\n  • ascii-video → ascii-art\n  • apple-notes — pruned (stale)\n  • apple-reminders — pruned (stale)\n  • arxiv — pruned (stale)\n  • claude-code — pruned (stale)\n  • claude-design — pruned (stale)\n  • codebase-inspection — pruned (stale)\n  • codex — pruned (stale)\n  • design-md — pruned (stale)\n  • findmy — pruned (stale)\n  … and 18 more\nfull report: hermes curator status\nkeep an umbrella stable: hermes curator pin ascii-art",
   "last_run_summary_shown_at": null,
   "paused": false,
   "run_count": 2
