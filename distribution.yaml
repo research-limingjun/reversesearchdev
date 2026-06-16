@@ -1,53 +1,52 @@
 name: reversesearchdev
-version: 1.0.5
-source: git@github.com:research-limingjun/reversesearchdev.git
-description: reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作
+version: 1.0.6
+description: "reversesearch \u9879\u76EE Dev Agent \u2014 \u6280\u672F\u65B9\u6848\
+  \u8BBE\u8BA1\u3001Codex/Cursor \u4EE3\u7801\u5B9E\u73B0\u3001\u98DE\u4E66\u534F\u4F5C"
 hermes_requires: '>=0.16.0'
 author: reversesearch team
 license: internal
 env_requires:
 - name: XIAOMI_API_KEY
-  description: 小米 Mimo 模型 API Key
-  required: true
+  description: "\u5C0F\u7C73 Mimo \u6A21\u578B API Key"
 - name: XIAOMI_BASE_URL
-  description: 小米 Mimo API Base URL
+  description: "\u5C0F\u7C73 Mimo API Base URL"
   required: false
   default: https://token-plan-cn.xiaomimimo.com/v1
 - name: FEISHU_APP_ID
-  description: 飞书应用 App ID（Gateway 接入）
-  required: true
+  description: "\u98DE\u4E66\u5E94\u7528 App ID\uFF08Gateway \u63A5\u5165\uFF09"
 - name: FEISHU_APP_SECRET
-  description: 飞书应用 App Secret
-  required: true
+  description: "\u98DE\u4E66\u5E94\u7528 App Secret"
 - name: FEISHU_CONNECTION_MODE
-  description: 飞书连接模式
+  description: "\u98DE\u4E66\u8FDE\u63A5\u6A21\u5F0F"
   required: false
   default: websocket
 - name: FEISHU_DM_POLICY
-  description: 飞书私聊策略
+  description: "\u98DE\u4E66\u79C1\u804A\u7B56\u7565"
   required: false
   default: pairing
 - name: FEISHU_GROUP_POLICY
-  description: 飞书群聊策略
+  description: "\u98DE\u4E66\u7FA4\u804A\u7B56\u7565"
   required: false
   default: open
 - name: FEISHU_ALLOW_ALL_USERS
-  description: 是否允许所有飞书用户
+  description: "\u662F\u5426\u5141\u8BB8\u6240\u6709\u98DE\u4E66\u7528\u6237"
   required: false
   default: 'true'
 - name: FEISHU_DOMAIN
-  description: 飞书域名
+  description: "\u98DE\u4E66\u57DF\u540D"
   required: false
   default: feishu
 - name: OPENAI_API_KEY
-  description: OpenAI 兼容 API Key（备用）
+  description: "OpenAI \u517C\u5BB9 API Key\uFF08\u5907\u7528\uFF09"
   required: false
 distribution_owned:
 - SOUL.md
 - config.yaml
 - distribution.yaml
-- skills/
+- skills
 - publish.config
 - publish.sh
-- scripts/
+- scripts
 - .gitignore
+source: git@github.com:research-limingjun/reversesearchdev.git
+installed_at: '2026-06-16T02:43:19+00:00'
