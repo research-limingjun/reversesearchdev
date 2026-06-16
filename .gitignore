@@ -54,6 +54,7 @@ platforms/
 hermes-agent/
 .worktrees/
 profiles/
+cron/
 node_modules/
 
 # User customization namespace

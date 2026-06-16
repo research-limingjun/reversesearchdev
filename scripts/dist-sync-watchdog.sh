@@ -108,16 +108,44 @@ PY
 
 _has_unpublished_local_changes() {
   [[ -d .git ]] || return 1
-  if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    return 0
-  fi
+
   local local_sha remote_sha
   local_sha="$(git rev-parse HEAD 2>/dev/null || true)"
   remote_sha="$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}' | head -1)"
   if [[ -n "$local_sha" && -n "$remote_sha" && "$local_sha" != "$remote_sha" ]]; then
     return 0
   fi
-  return 1
+
+  local owned_dirty
+  owned_dirty="$(python3 - "$MANIFEST" <<'PY'
+import re, subprocess, sys
+from pathlib import Path
+
+text = Path(sys.argv[1]).read_text(encoding="utf-8")
+owned = []
+in_owned = False
+for line in text.splitlines():
+    if line.strip().startswith("distribution_owned:"):
+        in_owned = True
+        continue
+    if in_owned:
+        if line and not line[0].isspace():
+            break
+        m = re.match(r"\s*-\s+(.+)", line)
+        if m:
+            owned.append(m.group(1).strip().strip("'\""))
+
+for p in owned:
+    out = subprocess.run(
+        ["git", "status", "--porcelain", "--", p],
+        capture_output=True, text=True,
+    )
+    if out.stdout.strip():
+        print(p)
+        break
+PY
+)"
+  [[ -n "$owned_dirty" ]]
 }
 
 REMOTE_URL="$(_resolve_remote_url)" || {
