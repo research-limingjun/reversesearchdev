@@ -110,24 +110,17 @@ owned = data.get("distribution_owned") or [
 
 if action == "bump":
     new_version = bump_patch(version)
-    if yaml is not None:
-        data["version"] = new_version
-        path.write_text(
-            yaml.safe_dump(data, sort_keys=False, allow_unicode=True, default_flow_style=False),
-            encoding="utf-8",
+    if re.search(r"^version:", text, re.M):
+        text = re.sub(
+            r"^version:\s*.+$",
+            f"version: {new_version}",
+            text,
+            count=1,
+            flags=re.M,
         )
     else:
-        if re.search(r"^version:", text, re.M):
-            text = re.sub(
-                r"^version:\s*.+$",
-                f"version: {new_version}",
-                text,
-                count=1,
-                flags=re.M,
-            )
-        else:
-            text = f"version: {new_version}\n" + text
-        path.write_text(text, encoding="utf-8")
+        text = f"version: {new_version}\n" + text
+    path.write_text(text, encoding="utf-8")
     version = new_version
 
 print(version)
@@ -150,8 +143,6 @@ fi
 VERSION="${MANIFEST_LINES[0]}"
 OWNED_PATHS=("${MANIFEST_LINES[@]:1}")
 
-TOOLING_PATHS=(publish.sh .gitignore publish.config)
-
 if [[ -d .git ]]; then
   for secret in .env auth.json sessions memories; do
     if [[ -e "$secret" ]] && ! git check-ignore -q "$secret" 2>/dev/null; then
@@ -162,7 +153,7 @@ if [[ -d .git ]]; then
 fi
 
 ADD_PATHS=()
-for p in "${OWNED_PATHS[@]}" "${TOOLING_PATHS[@]}"; do
+for p in "${OWNED_PATHS[@]}"; do
   if [[ -e "$p" || -d "$p" ]]; then
     ADD_PATHS+=("$p")
   else

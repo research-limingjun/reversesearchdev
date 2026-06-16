@@ -1,5 +1,5 @@
 name: reversesearchdev
-version: 1.0.1
+version: 1.0.2
 description: reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作
 hermes_requires: '>=0.16.0'
 author: reversesearch team
@@ -46,3 +46,6 @@ distribution_owned:
 - config.yaml
 - distribution.yaml
 - skills/
+- publish.config
+- publish.sh
+- .gitignore
