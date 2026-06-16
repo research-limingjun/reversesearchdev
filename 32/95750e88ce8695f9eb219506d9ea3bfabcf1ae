@@ -1,0 +1,41 @@
+update.sh
+  s_dd0e372b0537c1::t_355445a365cf30 1-257
+publish.sh
+  s_dd0e372b0537c1::t_f00ca63b133db0 237
+  s_dd0e372b0537c1::t_121e2aa6ae4ae2 254
+scripts/setup-agent-sync-cron.sh
+  s_dd0e372b0537c1::t_72955a0f7d85b3 3
+scripts/agent-sync-watchdog.sh
+  s_dd0e372b0537c1::t_1953558419f0ce 316-317
+  s_dd0e372b0537c1::t_502277d9caa3ba 315
+  s_dd0e372b0537c1::t_d5a580a3a7755a 263,265-267
+distribution.yaml
+  s_dd0e372b0537c1::t_216aacc63564e0 49
+scripts/agent-conflict-branch.sh
+  s_dd0e372b0537c1::t_e62b70f76b215d 191
+skills/agent-distribution-sync/references/ui-setup.md
+  s_dd0e372b0537c1::t_205a1e5c0c8c36 61
+  s_dd0e372b0537c1::t_a66dd7b3becb38 45-46
+publish.config
+  s_dd0e372b0537c1::t_f4c8c64b4cf6b2 6
+skills/agent-distribution-sync/SKILL.md
+  s_dd0e372b0537c1::t_ac543a4ac3aa01 90-98
+  s_dd0e372b0537c1::t_3d99ae795d01d4 67-68
+  s_dd0e372b0537c1::t_b9e9c9545d132b 15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "3295750e88ce8695f9eb219506d9ea3bfabcf1ae",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
