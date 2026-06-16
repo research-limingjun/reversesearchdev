@@ -1,0 +1,27 @@
+distribution.yaml
+  s_dd0e372b0537c1::t_5ee5f9094239bc 52
+  s_dd0e372b0537c1::t_a11e2b1a8c11a8 3
+scripts/setup-dist-sync-cron.sh
+  s_dd0e372b0537c1::t_e8a51bb67b7a77 1-63
+scripts/dist-sync-watchdog.sh
+  s_dd0e372b0537c1::t_97ec27d0e3bd12 1-163
+publish.sh
+  s_dd0e372b0537c1::t_60ed291fd56bea 162-165
+  s_dd0e372b0537c1::t_0143127ba564b3 59-82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "234909de30950e2bae4d521ed91f5ab666f2c65b",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
