@@ -82,3 +82,4 @@ lark-cli im +messages-send --chat-id "oc_679c37d616217fa4350272e332a0dc64" --con
 ```bash
 lark-cli im +messages-send --chat-id "oc_679c37d616217fa4350272e332a0dc64" --content '{"zh_cn":{"title":"","content":[[{"tag":"at","user_id":"ou_396ed718a30720845e0b28bcc24337a1"},{"tag":"text","text":" 请测试任务 TASK-001"}]]}}' --msg-type post --as bot
 ```
+# e2e-test-local-publish-1781588659
