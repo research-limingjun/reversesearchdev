@@ -1,5 +1,5 @@
 name: reversesearchdev
-version: 1.0.11
+version: 1.0.12
 description: "reversesearch \u9879\u76EE Dev Agent \u2014 \u6280\u672F\u65B9\u6848\
   \u8BBE\u8BA1\u3001Codex/Cursor \u4EE3\u7801\u5B9E\u73B0\u3001\u98DE\u4E66\u534F\u4F5C"
 hermes_requires: '>=0.16.0'
