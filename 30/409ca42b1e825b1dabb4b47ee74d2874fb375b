@@ -1,0 +1,21 @@
+.gitignore
+  s_dd0e372b0537c1::t_9d936c74649449 57
+scripts/dist-sync-watchdog.sh
+  s_dd0e372b0537c1::t_3614214d55d025 111,118-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "30409ca42b1e825b1dabb4b47ee74d2874fb375b",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
