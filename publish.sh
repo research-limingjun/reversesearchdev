@@ -56,6 +56,30 @@ if [[ ! -d .git ]]; then
   git init -b "$BRANCH"
 fi
 
+_set_source() {
+  local remote="$1"
+  python3 - "$PROFILE_DIR/distribution.yaml" "$remote" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+remote = sys.argv[2].strip()
+text = path.read_text(encoding="utf-8")
+line = f"source: {remote}"
+
+if re.search(r"^source:", text, re.M):
+    text = re.sub(r"^source:\s*.+$", line, text, count=1, flags=re.M)
+else:
+    if re.search(r"^version:", text, re.M):
+        text = re.sub(r"^(version:\s*.+)$", r"\1\n" + line, text, count=1, flags=re.M)
+    else:
+        text = line + "\n" + text
+
+path.write_text(text, encoding="utf-8")
+PY
+}
+
 _manifest_py() {
   python3 - "$PROFILE_DIR/distribution.yaml" "$1" <<'PY'
 import re
@@ -135,6 +159,10 @@ if [[ "$DRY_RUN" == true ]]; then
   MANIFEST_LINES=()
   while IFS= read -r line; do MANIFEST_LINES+=("$line"); done < <(_manifest_py read)
 else
+  if [[ -n "${REMOTE:-}" ]]; then
+    echo "→ Writing source in distribution.yaml"
+    _set_source "$REMOTE"
+  fi
   echo "→ Bumping version in distribution.yaml"
   MANIFEST_LINES=()
   while IFS= read -r line; do MANIFEST_LINES+=("$line"); done < <(_manifest_py bump)
