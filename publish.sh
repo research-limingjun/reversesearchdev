@@ -234,7 +234,7 @@ if git diff --cached --quiet; then
     echo ""
     echo "Published reversesearchdev@${VERSION}"
     echo "  hermes profile install $REMOTE --name reversesearchdev --alias -y"
-    echo "  hermes profile update reversesearchdev"
+    echo "  ./update.sh"
     exit 0
   fi
   echo "No changes to publish."
@@ -251,4 +251,4 @@ _push_branch_and_tag
 echo ""
 echo "Published reversesearchdev@${VERSION}"
 echo "  hermes profile install $REMOTE --name reversesearchdev --alias -y"
-echo "  hermes profile update reversesearchdev"
+echo "  ./update.sh"

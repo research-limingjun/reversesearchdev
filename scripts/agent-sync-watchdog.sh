@@ -260,33 +260,11 @@ if [[ -n "$LOCAL_DIRTY" ]] || [[ "${LOCAL_AHEAD:-0}" -gt 0 ]]; then
   LOCAL_NEEDS_PUBLISH=true
 fi
 
-# Conflict: local unpublished work and remote has commits we lack
+# Conflict + pull: delegate to update.sh
 if [[ "$LOCAL_NEEDS_PUBLISH" == true ]] && [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; then
-  LOCAL_HEAD="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
-  REMOTE_HEAD="$(git rev-parse --short "origin/$BRANCH" 2>/dev/null || echo unknown)"
-  LOCAL_DESC="$LOCAL_DIRTY"
-  if [[ -z "$LOCAL_DESC" ]]; then
-    LOCAL_DESC="已 commit 未 push（领先 ${LOCAL_AHEAD} 个提交）"
-  fi
-  if [[ "${CONFLICT_STRATEGY:-distribution_branch}" == "distribution_branch" ]]; then
-    export CONFLICT_LOCAL_DESC="$LOCAL_DESC"
-    export CONFLICT_LOCAL_HEAD="$LOCAL_HEAD"
-    export CONFLICT_REMOTE_HEAD="$REMOTE_HEAD"
-    export CONFLICT_REMOTE_AHEAD="$REMOTE_AHEAD"
-    chmod +x "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
-    "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
-    exit 0
-  fi
-  cat <<EOF
-[${PROFILE_NAME}] 配置同步冲突，需人工介入
-本机未发布: ${LOCAL_DESC}
-远端领先 ${REMOTE_AHEAD} 个提交 (${LOCAL_HEAD}..${REMOTE_HEAD})
-建议:
-  1) 保留本机改动: ./publish.sh 后解决 push 冲突，或 git pull --rebase origin ${BRANCH}
-  2) 放弃本机改动: git stash && hermes -p ${PROFILE_NAME} profile update ${PROFILE_NAME} -y
-远端: ${REMOTE_URL}
-EOF
-  exit 0
+  chmod +x "$PROFILE_DIR/update.sh"
+  "$PROFILE_DIR/update.sh"
+  exit $?
 fi
 
 # Publish: local changes only, remote not ahead
@@ -334,23 +312,9 @@ fi
 
 # Pull: remote ahead, local clean
 if [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; then
-  if ! hermes -p "$PROFILE_NAME" profile update "$PROFILE_NAME" -y >/dev/null 2>&1; then
-    echo "[${PROFILE_NAME}] profile update 失败，请检查 source 与 Git 权限" >&2
-    exit 1
-  fi
-
-  _git_fetch_quiet || true
-  REMOTE_SHA="$(_remote_branch_sha "$REMOTE_URL")"
-  NEW_VERSION="$(_read_version)"
-  _write_state "$REMOTE_SHA" "$NEW_VERSION" "pull"
-  _clear_conflict_state
-
-  cat <<EOF
-[${PROFILE_NAME}] 数字人配置已自动更新至 v${NEW_VERSION}
-来源: ${REMOTE_URL}
-已同步: SOUL.md / skills / distribution.yaml（memories 与 .env 未改动）
-EOF
-  exit 0
+  chmod +x "$PROFILE_DIR/update.sh"
+  "$PROFILE_DIR/update.sh"
+  exit $?
 fi
 
 # Silent: nothing to do

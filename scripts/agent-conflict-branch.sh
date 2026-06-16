@@ -188,7 +188,7 @@ _emit_fallback_notice() {
 远端领先 ${remote_ahead} 个提交 (${local_head}..${remote_head})
 建议:
   1) 手动创建分支并 push 后按 distribution 冲突流程合并
-  2) 放弃本机改动: git stash && hermes -p ${PROFILE_NAME} profile update ${PROFILE_NAME} -y
+  2) 放弃本机改动: git stash && ./update.sh
 远端: ${remote_url}
 EOF
 }

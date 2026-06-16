@@ -42,8 +42,8 @@
 |------|----------|
 | 无变化 | 无（静默） |
 | 本机有改动、远端无新提交 | 「已自动发布至 vX」+ 变更文件列表 |
-| 远端有新版本、本机干净 | 「已自动更新至 vX」 |
-| 本机与远端均有改动 | 【Distribution】冲突通知 + `distribution/Conflict_*` + GitHub 链接 |
+| 远端有新版本、本机干净 | 「Updated …@vX」 |
+| 本机与远端均有改动 | 【Distribution】冲突通知（`./update.sh` 自动处理） |
 
 ## 验证步骤
 
@@ -58,7 +58,7 @@
 |------|------|------|
 | 任务从不触发 | gateway 未启动 | `hermes -p reversesearchdev gateway start` |
 | 执行失败 / 无飞书 | 飞书凭证或 channel 未配 | 检查 `.env` 与 `FEISHU_HOME_CHANNEL` |
-| 脚本找不到 | 配置档选错或脚本未同步 | 确认 profile 为 `reversesearchdev`，`profile update` 拉最新 |
+| 脚本找不到 | 配置档选错或脚本未同步 | 确认 profile 为 `reversesearchdev`，`./update.sh` 拉最新 |
 | 冲突告警 | 本机与远端同时有未合并改动 | 飞书五步：`checkout` 冲突分支 → `pull origin main --no-rebase` → push → GitHub PR |
 | 自动发布失败 | 无 push 权限或 git 错误 | 检查 SSH key 与 `publish.config` 的 `REMOTE` |
 | profile update 失败 | Git 权限或 source 缺失 | 检查 `distribution.yaml` 的 `source:` 与 SSH/HTTPS 权限 |

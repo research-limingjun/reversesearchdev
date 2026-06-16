@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # CLI 备用：注册 12h distribution 双向同步 cron（no-agent + feishu）。
-# 上行：本机 distribution_owned 有改动 → 自动 publish；下行：远端有更新 → profile update。
+# 上行：本机有改动 → publish.sh；下行/冲突 → ./update.sh
 # 推荐方式：Hermes「计划」页按 agent-distribution-sync skill 手动创建任务。
 set -euo pipefail
 

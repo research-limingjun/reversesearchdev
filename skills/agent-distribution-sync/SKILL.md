@@ -12,7 +12,7 @@ description: |
 每 12 小时检测本机 `distribution_owned` 与 GitHub 远端 `reversesearchdev` distribution 的差异：
 
 - **本机有未发布改动**且远端无新提交 → 自动 `./publish.sh` 推送
-- **远端有新版本**且本机干净 → `profile update` 拉取
+- **远端有新版本**且本机干净 → `./update.sh` 拉取
 - **双方都有新改动**（分叉）→ 自动推 `distribution/Conflict_*` 分支 + 飞书五步操作通知
 - **均无变化** → 静默
 
@@ -64,8 +64,8 @@ description: |
 |------|------|------|
 | 本地与远端均无变化 | 静默退出 | 不发 |
 | 仅本机有未发布改动 | 自动 `./publish.sh` | 发「已自动发布至 vX.X.X」+ 变更文件 |
-| 仅远端有新提交 | `profile update -y` | 发「已自动更新至 vX.X.X」 |
-| 本机与远端均有新改动（分叉） | 推 `distribution/Conflict_*` 分支，main 恢复干净 | 发【Distribution】冲突通知 + GitHub 链接 |
+| 仅远端有新提交 | `./update.sh` | 发「Updated …@vX」 |
+| 本机与远端均有新改动（分叉） | `./update.sh`（自动 conflict 分支） | 发【Distribution】冲突通知 |
 | publish / update 失败 | 不更新 state | 发错误摘要 |
 
 状态文件：`local/dist_sync_state.json`（本机专用，不入 git）
@@ -86,6 +86,15 @@ git pull origin main --no-rebase   # Diff 解决 → push → GitHub 合并 PR
 备选：`git worktree add ~/reversesearchdev-merge distribution/Conflict_main_<...>`
 
 `CONFLICT_STRATEGY=alert_only` 恢复仅文字告警。
+
+## 手动命令
+
+| 场景 | 命令 |
+|------|------|
+| 拉取最新 | `./update.sh` |
+| 发布改动 | `./publish.sh` |
+
+`./update.sh` 遇分叉冲突会自动执行 `agent-conflict-branch.sh`；飞书通知仍由 12h cron 投递。
 
 ## CLI 备用（Power User）
 
