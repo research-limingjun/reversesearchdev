@@ -1,6 +1,7 @@
 # 飞书通知发送流程
 
-> **⚠️ 2026-06-08 更新**：首选 `lark-cli --msg-type post` + open_id，见 SKILL.md 飞书通知章节。本文件记录 curl/Python 备用方案。
+> **⚠️ 2026-06-08 更新**：首选 `lark-cli` 发送消息（见下方 lark-cli 章节）。本文件记录 curl/Python 备用方案。
+> **⚠️ 2026-06-16 更新**：npm `lark-cli` 是空壳包，实际使用 `~/.local/bin/lark-cli` Python 封装脚本，详见 `references/lark-cli-wrapper.md`。
 
 ## 凭据来源
 
@@ -24,13 +25,16 @@ for chat in data.get('data', {}).get('items', []):
     print(f\"{chat['chat_id']}  {chat.get('name', '(无名)')}\")"
 ```
 
-### 已知 chat_id 参考表
+### 已知 chat_id 参考表（2026-06-16 更新）
 
 | 群组名称 | chat_id | 备注 |
 |----------|---------|------|
-| ReverseSearch 开发群 | `oc_679c37d616217fa4350272e332a0dc64` | 2026-06-08 验证有效 |
+| REQ-特殊事件: 改签报价 | `oc_0b51a94306edcfdf9774057bfec1feb6` | 当前主要工作群 |
+| 国际退改飞书群 | `oc_679c37d616217fa4350272e332a0dc64` | 大群 |
+| REQ-改签: 国际机票接入新渠道tabigo | `oc_775251eccba15e3082a08beb4fa16d7c` | tabigo 需求群 |
 
-> 以上仅供参考。如果消息发送失败（如 `chat_id not found`），请重新执行上方查询命令获取最新 chat_id。
+> ⚠️ **发消息前必须用 `lark-cli list-chats` 确认 chat_id！** 机器人可能在多个群，用错会"窜群"。
+> ⚠️ **npm `lark-cli` 是空壳包**，必须用 `~/.local/bin/lark-cli` Python 封装脚本（见 `references/lark-cli-wrapper.md`）。
 
 ## 主要方案：curl（推荐）
 

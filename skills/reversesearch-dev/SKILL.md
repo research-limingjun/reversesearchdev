@@ -568,31 +568,44 @@ git ls-tree -r origin/hermes --name-only | grep "TASK-"
 
 ## 环境配置（重要！）
 
-tmux 和 lark-cli 都在 `/usr/local/bin/` 下，但默认 PATH 不包含。使用前必须设置：
+tmux 在 `/usr/local/bin/` 下，但默认 PATH 不包含。使用前必须设置：
 
 ```bash
-export PATH="/usr/local/bin:/usr/local/Cellar/node@20/20.20.0/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/Cellar/node@20/20.20.0/bin:$HOME/.local/bin:$PATH"
 ```
 
 验证命令：
 ```bash
 tmux -V  # tmux 3.6b
-lark-cli --version  # lark-cli version 1.0.45
+lark-cli list-chats  # 应输出机器人所在群列表
 cursor --version  # Cursor CLI version
+```
+
+### lark-cli 安装
+
+**⚠️ npm 上的 `lark-cli`（v0.1.0）是空壳包，没有 bin 字段，不能用 `npm install -g lark-cli` 安装！**
+
+实际的 lark-cli 是自建 Python 脚本，位于 `~/.local/bin/lark-cli`，封装了飞书 API。
+
+如果 lark-cli 不存在，用以下方式重建：
+
+```bash
+mkdir -p ~/.local/bin
+# 从 skill 的 scripts/ 目录复制（或从 skill_manage write_file 获取源码）
+# 脚本功能：send / post / im +messages-send / list-chats / token
+# 依赖：纯 Python3 标准库（urllib），无需额外安装
+chmod +x ~/.local/bin/lark-cli
 ```
 
 ## 飞书通知
 
 Target: `feishu:$CHAT_ID`（chat_id 必须通过 `lark-cli im chat.list` 动态获取，不要硬编码）
 
-### lark-cli 初始化（首次使用必须执行）
+**⚠️ lark-cli 不可用时**：使用内置 Python 脚本 `scripts/send_feishu_msg.py` 发送消息（详见 P58）。
 
-```bash
-export PATH="/usr/local/bin:/usr/local/Cellar/node@20/20.20.0/bin:$PATH"
-lark-cli config bind --source hermes --identity bot-only
-```
+### lark-cli 认证
 
-**⚠️ 绑定后才能使用 lark-cli 发送消息，否则会报 `not_configured` 错误。**
+自建 lark-cli（`~/.local/bin/lark-cli`）从 `~/.hermes/profiles/reversesearchdev/.env` 读取 `FEISHU_APP_ID` 和 `FEISHU_APP_SECRET`，自动获取 token。**无需额外绑定步骤**。
 
 ### @ 格式
 
@@ -746,6 +759,64 @@ with open('path/to/File.java', 'w') as f:
 - 用 `terminal` + `cat` 或 `python3 open()` 读取原始文件内容
 - 或用 `read_file` 后 strip 行号前缀再使用
 
+## lark-cli 安装与使用
+
+**lark-cli 不是 npm 公开包！** `npm install -g lark-cli` 安装的是一个空壳 placeholder 包，没有 CLI 功能。
+
+### 正确安装方式
+
+使用自定义 Python 封装脚本（封装飞书 API）：
+
+```bash
+# 安装路径
+~/.local/bin/lark-cli
+
+# 确保 PATH 包含
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### 首次安装
+
+如果 `~/.local/bin/lark-cli` 不存在，用 `write_file` 创建 Python 脚本（见 `references/lark-cli-wrapper.md`）。
+
+### 使用方式
+
+```bash
+# @ 提及 + 富文本消息（最常用）
+lark-cli im +messages-send --chat-id "oc_xxx" \
+  --content '{"zh_cn":{"title":"标题","content":[[{"tag":"at","user_id":"ou_xxx"},{"tag":"text","text":" 内容"}]]}}' \
+  --msg-type post --as bot
+
+# 列出机器人所在群（发消息前必须先确认 chat_id）
+lark-cli list-chats
+
+# 发送纯文本
+lark-cli send "oc_xxx" "消息内容"
+
+# 获取 token
+lark-cli token
+```
+
+### ⚠️ 发消息前必须先确认 chat_id
+
+```bash
+# 1. 列出群组
+lark-cli list-chats
+# 输出示例：
+# oc_0b51a94306edcfdf9774057bfec1feb6  REQ-特殊事件: 改签报价
+# oc_679c37d616217fa4350272e332a0dc64  国际退改飞书群
+
+# 2. 用正确的 chat_id 发消息
+```
+
+### 已知群组 chat_id
+
+| 群组名称 | chat_id |
+|----------|---------|
+| REQ-特殊事件: 改签报价 | `oc_0b51a94306edcfdf9774057bfec1feb6` |
+| 国际退改飞书群 | `oc_679c37d616217fa4350272e332a0dc64` |
+| REQ-改签: 国际机票接入新渠道tabigo | `oc_775251eccba15e3082a08beb4fa16d7c` |
+
 ## 常见陷阱
 
 | 错误做法 | 正确做法 |
@@ -761,6 +832,9 @@ with open('path/to/File.java', 'w') as f:
 | 手动更新状态后不推送 | 更新状态 → 记录表 → git commit+push 三件套 |
 | lark-cli 未绑定直接使用 | 先执行 `lark-cli config bind --source hermes --identity bot-only` |
 | 用 `feature/` 前缀创建分支 | 远程已有 `feature` 分支会导致 ref 冲突，用 `TASK-XXX_描述` 格式 |
+| `npm install -g lark-cli` 安装CLI | npm 包是空壳，用 `~/.local/bin/lark-cli` Python 封装脚本 |
+| 发消息前不确认 chat_id | 先 `lark-cli list-chats` 确认群名和 chat_id 再发送 |
+| `npm install -g lark-cli` | npm 包是空壳，用自建 Python 脚本 `~/.local/bin/lark-cli` |
 
 ## 关键 Pitfalls
 
@@ -801,25 +875,25 @@ with open('path/to/File.java', 'w') as f:
 ```python
 send_message(target="feishu", message="消息内容")
 ```
-send_message 会自动使用当前会话的 chat_id，无需手动获取。
+### P58. lark-cli 不可用时的备用方案（2026-06-12 发现，2026-06-16 更新）
+**严重程度：🟡 中**
 
-**方案 B：直接调用 Feishu API**
-需要 `curl -k`（跳过 SSL 证书验证），因为内网环境有自签名证书。
+`lark-cli`（自建 Python 脚本，位于 `~/.local/bin/lark-cli`）是首选方案。如果不可用：
 
-```bash
-# 获取 token
-source ~/.hermes/profiles/reversesearchdev/.env
-TOKEN=$(curl -sk "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal" \
-  -H "Content-Type: application/json" \
-  -d "{\"app_id\":\"$FEISHU_APP_ID\",\"app_secret\":\"$FEISHU_APP_SECRET\"}" \
-  | python3 -c "import sys,json; print(json.load(sys.stdin)['tenant_access_token'])")
+**方案 A：重建 lark-cli（推荐）**
+从 skill 的 `scripts/lark-cli.py` 复制到 `~/.local/bin/lark-cli` 并 `chmod +x`。
 
-# 发送消息（content 必须是 JSON 字符串，不是嵌套 JSON）
-curl -sk "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d "{\"receive_id\":\"$CHAT_ID\",\"msg_type\":\"post\",\"content\":\"$CONTENT_JSON_STRING\"}"
+**方案 B：直接调用 Feishu API（Python urllib）**
+```python
+import json, os, ssl, urllib.request
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+# 从 .env 加载 app_id/app_secret，获取 token，发送消息
 ```
+
+**方案 C：curl（最后手段）**
+适合简单消息，复杂中文内容容易因 shell quoting 失败。2026-06-16 实测：curl 连续 3 次报 `230001`，切换 Python urllib 后一次成功。**默认用 Python，不要用 curl。**
 
 ⚠️ `content` 字段的值必须是 **JSON 字符串**（`json.dumps(content, ensure_ascii=False)`），不能直接嵌套 JSON 对象，否则报 `230001 invalid message content`。
 
@@ -889,6 +963,13 @@ git pull origin hermes --no-rebase
 ```
 
 如果 merge 产生冲突，手动解决后 `git add` + `git commit` 即可（不需要 `git rebase --continue`）。
+
+### P66. npm 上的 lark-cli 是空壳包（2026-06-16 发现）
+**严重程度：🟡 中**
+
+`npm install -g lark-cli` 安装的是 v0.1.0 占位包，**没有 bin 字段**，不是真正的 CLI 工具。安装后 `lark-cli` 命令不存在。
+
+**正确做法**：使用自建 Python 脚本 `~/.local/bin/lark-cli`（源码在 skill 的 `scripts/lark-cli.py`）。如果不存在，从 skill 目录复制并 `chmod +x`。
 
 ### P59. reversepromotion 仓库 master 分支受保护（2026-06-12 发现）
 **严重程度：🟡 中**
