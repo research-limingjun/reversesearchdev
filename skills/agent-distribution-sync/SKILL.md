@@ -19,7 +19,7 @@ description: |
 
 1. 打开 Hermes **计划** → **创建任务**
 2. 填写字段：
-   - **任务名称**：`dist-sync-12h`
+   - **任务名称**：`agent-distribution-sync`
    - **工作区配置档**：`reversesearchdev`
    - **执行计划**：`every 12h`（或 cron `0 */12 * * *`）
    - **重复次数**：留空（无限循环）

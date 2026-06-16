@@ -6,7 +6,7 @@
 
 | UI 字段 | 填写值 | 说明 |
 |---------|--------|------|
-| 任务名称 | `dist-sync-12h` | 便于在任务列表识别 |
+| 任务名称 | `agent-distribution-sync` | 与 skill 同名，飞书通知标题一致 |
 | 工作区配置档 | `reversesearchdev` | 必须选对 profile，否则脚本路径与 source 不对 |
 
 ## 执行计划与输出
@@ -60,7 +60,7 @@ hermes -p reversesearchdev cron create "every 12h" \
   --no-agent \
   --script dist-sync-watchdog.sh \
   --deliver feishu \
-  --name dist-sync-12h \
+  --name agent-distribution-sync \
   --profile reversesearchdev
 ```
 

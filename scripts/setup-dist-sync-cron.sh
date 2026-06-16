@@ -5,7 +5,7 @@ set -euo pipefail
 
 PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
 PROFILE_DIR="${HERMES_HOME:-$HOME/.hermes/profiles/$PROFILE_NAME}"
-JOB_NAME="dist-sync-12h"
+JOB_NAME="agent-distribution-sync"
 SCRIPT_NAME="dist-sync-watchdog.sh"
 JOBS_FILE="$PROFILE_DIR/cron/jobs.json"
 
@@ -13,12 +13,14 @@ cd "$PROFILE_DIR"
 chmod +x "$PROFILE_DIR/scripts/$SCRIPT_NAME"
 
 find_job_id() {
-  python3 - "$JOBS_FILE" "$JOB_NAME" <<'PY'
+  python3 - "$JOBS_FILE" "$JOB_NAME" "$SCRIPT_NAME" <<'PY'
 import json, sys
 from pathlib import Path
 
 p = Path(sys.argv[1])
 name = sys.argv[2]
+script = sys.argv[3]
+legacy_names = {name, "dist-sync-12h"}
 if not p.is_file():
     sys.exit(0)
 try:
@@ -28,7 +30,7 @@ except Exception:
 if isinstance(jobs, dict):
     jobs = jobs.get("jobs", [])
 for job in jobs:
-    if job.get("name") == name:
+    if job.get("name") in legacy_names or job.get("script") == script:
         print(job.get("id", ""))
         break
 PY
