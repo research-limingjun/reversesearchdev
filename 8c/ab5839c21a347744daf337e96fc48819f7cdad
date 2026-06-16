@@ -1,0 +1,40 @@
+skills/agent-distribution-sync/SKILL.md
+  s_dd0e372b0537c1::t_c2eff7308ae55b 81
+  s_dd0e372b0537c1::t_2c2f2ae02b10d6 4,6-7,10,12-19,36,47-49,59,65-69,73-75,87
+  s_dd0e372b0537c1::t_673659d0d2e278 34
+  s_dd0e372b0537c1::t_48bffedde9e91a 52
+  s_dd0e372b0537c1::t_4576b394170c8f 61
+scripts/setup-agent-sync-cron.sh
+  s_dd0e372b0537c1::t_bd9df966faddd0 10
+  s_dd0e372b0537c1::t_0fef4a72d97d11 25,35
+  s_dd0e372b0537c1::t_2bc4d051e4adbb 2-3
+skills/agent-distribution-sync/references/ui-setup.md
+  s_dd0e372b0537c1::t_34642bd16f6133 28
+  s_dd0e372b0537c1::t_2e2af47502bea2 77
+  s_dd0e372b0537c1::t_50cb150818009b 71
+  s_dd0e372b0537c1::t_1cf9f301ca24dd 39-47,53,62-63
+publish.sh
+  s_dd0e372b0537c1::t_24c89a233b27e0 205-224,228-239,248-249
+SOUL.md
+  s_dd0e372b0537c1::t_635f66b62f3bd1 16
+scripts/agent-sync-watchdog.sh
+  s_dd0e372b0537c1::t_92327e00364da6 101-112
+  s_dd0e372b0537c1::t_82d431e3062dd1 223,242-245,248,267-270,273,289
+  s_dd0e372b0537c1::t_22210821f5e951 2-3,12,17-25,72-73,84-85,114-116,136,143-146,150-210,216-221,224-226,229,233-235,238-241,247,249-252,258-266,271-272,274-288,290-297,300-310,312,317-321
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "8cab5839c21a347744daf337e96fc48819f7cdad",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
