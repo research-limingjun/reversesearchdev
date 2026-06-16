@@ -8,14 +8,104 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [planning, plan-mode, implementation, workflow, design, documentation]
-    related_skills: [subagent-driven-development, test-driven-development, requesting-code-review]
+    related_skills: [subagent-driven-development, test-driven-development, code-review]
 ---
 
-# Plan Mode
+# Planning & Implementation Plans
 
-Use this skill when the user wants a plan instead of execution.
+Use this skill when the user wants a plan instead of execution, or when breaking down complex requirements into actionable steps.
 
-## Core behavior
+Two modes:
+- **Plan mode** — deliverable is a markdown plan, no execution (§1)
+---
+
+## §2 — Writing Effective Plans
+
+### Core Principle
+
+A good plan makes implementation obvious. If someone has to guess, the plan is incomplete.
+
+Assume the implementer is skilled but knows nothing about the codebase or problem domain.
+
+### Bite-Sized Task Granularity
+
+**Each task = 2-5 minutes of focused work.** Every step is one action:
+
+- "Write the failing test" — step
+- "Run it to make sure it fails" — step
+- "Implement the minimal code to make the test pass" — step
+- "Run the tests and make sure they pass" — step
+- "Commit" — step
+
+**Too big:**
+```markdown
+### Task 1: Build authentication system
+[50 lines of code across 5 files]
+```
+
+**Right size:**
+```markdown
+### Task 1: Create User model with email field
+[10 lines, 1 file]
+
+### Task 2: Add password hash field to User
+[8 lines, 1 file]
+
+### Task 3: Create password hashing utility
+[15 lines, 1 file]
+```
+
+### Plan Document Structure
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task.
+
+**Goal:** [One sentence describing what this builds]
+**Architecture:** [2-3 sentences about approach]
+**Tech Stack:** [Key technologies/libraries]
+
+---
+
+### Task N: [Descriptive Name]
+
+**Objective:** What this task accomplishes (one sentence)
+
+**Files:**
+- Create: `exact/path/to/new_file.py`
+- Modify: `exact/path/to/existing.py:45-67`
+- Test: `tests/path/to/test_file.py`
+
+**Step 1: Write failing test**
+[test code]
+
+**Step 2: Run test to verify failure**
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL
+
+**Step 3: Write minimal implementation**
+[code]
+
+**Step 4: Run test to verify pass**
+Expected: PASS
+
+**Step 5: Commit**
+```
+
+### Plan Quality Checklist
+
+- [ ] Every task has exact file paths
+- [ ] Every task includes complete code (not pseudocode)
+- [ ] Every task includes test commands and expected results
+- [ ] Tasks are ordered by dependency (no forward references)
+- [ ] Each task is 2-5 minutes of work
+- [ ] No task requires understanding the whole plan
+- [ ] Every task ends with a commit
+
+---
+
+## Behavior Rules (recap)
 
 For this turn, you are planning only.
 
@@ -29,15 +119,15 @@ For this turn, you are planning only.
 
 Write a markdown plan that is concrete and actionable.
 
-Include, when relevant:
-- Goal
-- Current context / assumptions
-- Proposed approach
-- Step-by-step plan
-- Files likely to change
-- Tests / validation
-- Risks, tradeoffs, and open questions
+### Plan structure
 
+- Start with a short summary of the goal and any important context.
+- Break the work into small, independently verifiable tasks.
+- For each task: describe what to do, name exact file paths, include the actual code to write, and list verification steps.
+- Specify exact file paths for every change.
+- Keep prose minimal — prefer checklists, short paragraphs, and code blocks.
+- Write the plan assuming another agent will execute each task in isolation via subagent-driven-development.
+- Do not include vague tasks like "implement the feature" — each task must be small enough that its success criteria are obvious.
 If the task is code-related, include exact file paths, likely test targets, and verification steps.
 
 ## Save location
