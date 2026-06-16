@@ -1,0 +1,27 @@
+skills/agent-distribution-sync/references/ui-setup.md
+  s_dd0e372b0537c1::t_b22c4ab4ebe8b8 9
+  s_dd0e372b0537c1::t_33f06428a13df6 63
+scripts/setup-dist-sync-cron.sh
+  s_dd0e372b0537c1::t_61cbb0c01881b9 16,22-23,33
+  s_dd0e372b0537c1::t_5acca335374dea 8
+SOUL.md
+  s_dd0e372b0537c1::t_0fd6482873c4b9 16
+skills/agent-distribution-sync/SKILL.md
+  s_dd0e372b0537c1::t_e62b4ac1686b3e 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "f85d3d36000878408bf61e93ab276329e7c6c691",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
