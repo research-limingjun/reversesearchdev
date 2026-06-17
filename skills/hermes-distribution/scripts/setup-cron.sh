@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
-# CLI 备用：注册 12h distribution 双向同步 cron（no-agent + feishu）。
-# 上行：本机有改动 → publish.sh；下行/冲突 → ./update.sh
-# 推荐方式：Hermes「计划」页按 agent-distribution-sync skill 手动创建任务。
+# Register 12h distribution bidirectional sync cron (no-agent + feishu).
+# Cron script: profile/scripts/agent-sync-watchdog.sh (Hermes path requirement).
 set -euo pipefail
 
-PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
-PROFILE_DIR="${HERMES_HOME:-$HOME/.hermes/profiles/$PROFILE_NAME}"
+SKILL_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROFILE_DIR="$(cd "$SKILL_SCRIPTS/../../.." && pwd)"
+
+# shellcheck source=_lib.sh
+source "$SKILL_SCRIPTS/_lib.sh"
+
+MANIFEST="$PROFILE_DIR/distribution.yaml"
+_hd_load_distribution_config "$MANIFEST"
+
 JOB_NAME="agent-distribution-sync"
 SCRIPT_NAME="agent-sync-watchdog.sh"
 JOBS_FILE="$PROFILE_DIR/cron/jobs.json"
+WATCHDOG="$PROFILE_DIR/scripts/$SCRIPT_NAME"
 
 cd "$PROFILE_DIR"
-chmod +x "$PROFILE_DIR/scripts/$SCRIPT_NAME"
+chmod +x "$WATCHDOG"
 
 find_job_id() {
   python3 - "$JOBS_FILE" "$JOB_NAME" "$SCRIPT_NAME" <<'PY'

@@ -3,33 +3,24 @@
 # Called by update.sh only after agent-divergence-merge.sh exits 2 (real merge conflict).
 set -euo pipefail
 
-PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
-PROFILE_DIR="${HERMES_HOME:-$HOME/.hermes/profiles/$PROFILE_NAME}"
+SKILL_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROFILE_DIR="$(cd "$SKILL_SCRIPTS/../../.." && pwd)"
+cd "$PROFILE_DIR"
+
+# shellcheck source=_lib.sh
+source "$SKILL_SCRIPTS/_lib.sh"
+
 STATE_FILE="$PROFILE_DIR/local/dist_sync_state.json"
 MANIFEST="$PROFILE_DIR/distribution.yaml"
-PUBLISH_CONFIG="$PROFILE_DIR/publish.config"
-BRANCH="${BRANCH:-main}"
 GIT_REMOTE=""
-CONFLICT_STRATEGY="${CONFLICT_STRATEGY:-distribution_branch}"
-CONFLICT_BRANCH_PREFIX="${CONFLICT_BRANCH_PREFIX:-distribution/Conflict}"
 
 CONFLICT_LOCAL_DESC="${CONFLICT_LOCAL_DESC:-}"
 CONFLICT_LOCAL_HEAD="${CONFLICT_LOCAL_HEAD:-}"
 CONFLICT_REMOTE_HEAD="${CONFLICT_REMOTE_HEAD:-}"
 CONFLICT_REMOTE_AHEAD="${CONFLICT_REMOTE_AHEAD:-0}"
 
-cd "$PROFILE_DIR"
-
-_load_publish_config() {
-  if [[ -f "$PUBLISH_CONFIG" ]]; then
-    # shellcheck source=/dev/null
-    source "$PUBLISH_CONFIG"
-  fi
-  BRANCH="${BRANCH:-main}"
-  GIT_REMOTE="${REMOTE:-}"
-  CONFLICT_STRATEGY="${CONFLICT_STRATEGY:-distribution_branch}"
-  CONFLICT_BRANCH_PREFIX="${CONFLICT_BRANCH_PREFIX:-distribution/Conflict}"
-}
+_hd_load_distribution_config "$MANIFEST"
+GIT_REMOTE="${REMOTE:-}"
 
 _join_lines() {
   local first=1 line
@@ -188,7 +179,7 @@ _emit_fallback_notice() {
 远端领先 ${remote_ahead} 个提交 (${local_head}..${remote_head})
 建议:
   1) 手动创建分支并 push 后按 distribution 冲突流程合并
-  2) 放弃本机改动: git stash && ./update.sh
+  2) 放弃本机改动: git stash && skills/hermes-distribution/scripts/update.sh
 远端: ${remote_url}
 EOF
 }
@@ -230,11 +221,9 @@ EOF
 EOF
 }
 
-_load_publish_config
-
 REMOTE_URL="${GIT_REMOTE:-}"
 if [[ -z "$REMOTE_URL" ]]; then
-  REMOTE_URL="$(grep -E '^source:' "$MANIFEST" 2>/dev/null | sed 's/^source:[[:space:]]*//' | tr -d "'\"" || true)"
+  REMOTE_URL="$(_hd_resolve_remote_url "$MANIFEST" 2>/dev/null || true)"
 fi
 
 LOCAL_HEAD="${CONFLICT_LOCAL_HEAD:-$(git rev-parse --short HEAD 2>/dev/null || echo unknown)}"

@@ -3,29 +3,23 @@
 # On clean merge: publish merged result. On merge conflict: exit 2 for agent-conflict-branch.sh.
 set -euo pipefail
 
-PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
-PROFILE_DIR="${HERMES_HOME:-$HOME/.hermes/profiles/$PROFILE_NAME}"
+SKILL_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROFILE_DIR="$(cd "$SKILL_SCRIPTS/../../.." && pwd)"
+cd "$PROFILE_DIR"
+
+# shellcheck source=_lib.sh
+source "$SKILL_SCRIPTS/_lib.sh"
+
 STATE_FILE="$PROFILE_DIR/local/dist_sync_state.json"
 MANIFEST="$PROFILE_DIR/distribution.yaml"
-PUBLISH_CONFIG="$PROFILE_DIR/publish.config"
-BRANCH="${BRANCH:-main}"
 GIT_REMOTE=""
 
 CONFLICT_LOCAL_DESC="${CONFLICT_LOCAL_DESC:-}"
 CONFLICT_REMOTE_AHEAD="${CONFLICT_REMOTE_AHEAD:-0}"
 
-cd "$PROFILE_DIR"
 mkdir -p "$PROFILE_DIR/local"
-
-_load_publish_config() {
-  if [[ -f "$PUBLISH_CONFIG" ]]; then
-    # shellcheck source=/dev/null
-    source "$PUBLISH_CONFIG"
-  fi
-  PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"
-  BRANCH="${BRANCH:-main}"
-  GIT_REMOTE="${REMOTE:-}"
-}
+_hd_load_distribution_config "$MANIFEST"
+GIT_REMOTE="${REMOTE:-}"
 
 _join_lines() {
   local first=1 line
@@ -163,8 +157,6 @@ _abort_merge_if_needed() {
   fi
 }
 
-_load_publish_config
-
 if [[ ! -d .git ]]; then
   echo "[${PROFILE_NAME}] 分叉合并失败: 非 git 仓库" >&2
   exit 1
@@ -208,7 +200,7 @@ if _has_merge_conflicts; then
 fi
 
 PUBLISH_OUTPUT=""
-if ! PUBLISH_OUTPUT="$("$PROFILE_DIR/publish.sh" 2>&1)"; then
+if ! PUBLISH_OUTPUT="$("$SKILL_SCRIPTS/publish.sh" 2>&1)"; then
   cat <<EOF
 [${PROFILE_NAME}] 分叉已合并但自动发布失败
 本机改动: ${LOCAL_DESC}

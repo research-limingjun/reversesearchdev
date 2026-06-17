@@ -1,5 +1,5 @@
 name: reversesearchdev
-version: 1.0.32
+version: 1.0.33
 description: "reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作"
 hermes_requires: '>=0.16.0'
 author: reversesearch team
@@ -40,14 +40,15 @@ env_requires:
 - name: OPENAI_API_KEY
   description: "OpenAI 兼容 API Key（备用）"
   required: false
+publish:
+  branch: main
+  conflict_strategy: distribution_branch
+  conflict_branch_prefix: distribution/Conflict
 distribution_owned:
 - SOUL.md
 - config.yaml
 - distribution.yaml
 - skills
-- publish.config
-- publish.sh
-- update.sh
 - scripts
 - .gitignore
 source: git@github.com:research-limingjun/reversesearchdev.git
