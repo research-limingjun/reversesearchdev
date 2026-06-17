@@ -1,0 +1,55 @@
+skills/hermes-distribution/scripts/agent-divergence-merge.sh
+  s_dd0e372b0537c1::t_b054589387e17d 6-12,21-22,203
+distribution.yaml
+  s_dd0e372b0537c1::t_e96e2959f6ba2d 43-46
+skills/hermes-distribution/scripts/agent-conflict-branch.sh
+  s_dd0e372b0537c1::t_f34478990c8b4b 6-12,22-23,182,226
+scripts/agent-sync-watchdog.sh
+  s_dd0e372b0537c1::t_87d7e82265ec9b 3-4,7-8,11-12,14
+skills/hermes-distribution/references/update.md
+  s_dd0e372b0537c1::t_5f979023af8996 1-53
+skills/hermes-distribution/references/cron-sync.md
+  s_dd0e372b0537c1::t_89e652bdf6683a 1-66
+skills/hermes-distribution/SKILL.md
+  s_dd0e372b0537c1::t_92605a7f9185cf 1-56
+skills/hermes-distribution/references/init.md
+  s_dd0e372b0537c1::t_94a5ee9bc07c27 1-52
+skills/hermes-distribution/references/source-formats.md
+  s_dd0e372b0537c1::t_b901c38cc0b635 1-54
+skills/hermes-distribution/references/env-setup.md
+  s_dd0e372b0537c1::t_be424a5405ab10 1-59
+skills/hermes-distribution/scripts/setup-cron.sh
+  s_dd0e372b0537c1::t_461a76583ba0e4 2-3,6-14,18,21
+skills/hermes-distribution/references/publish.md
+  s_dd0e372b0537c1::t_b18e15c401345e 1-63
+skills/hermes-distribution/scripts/_lib.sh
+  s_dd0e372b0537c1::t_beb490fa9df5bb 1-77
+skills/hermes-distribution/scripts/init-distribution.sh
+  s_dd0e372b0537c1::t_e82ad60e70c1b3 1-153
+skills/hermes-distribution/scripts/agent-sync-watchdog-core.sh
+  s_dd0e372b0537c1::t_d3d2a841778409 1-286
+skills/hermes-distribution/references/install.md
+  s_dd0e372b0537c1::t_70707d526c3796 1-62
+skills/hermes-distribution/references/ui-setup.md
+  s_dd0e372b0537c1::t_0398271feab36c 1-58
+skills/hermes-distribution/scripts/publish.sh
+  s_dd0e372b0537c1::t_86d1d49c756a35 1-258
+skills/hermes-distribution/scripts/update.sh
+  s_dd0e372b0537c1::t_4f0af41bca7772 1-236
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "dfa23ee82784c7c7af4f6e904f2206ae2057a3a4",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
