@@ -1,0 +1,2 @@
+# Distribution 冲突演练 — 远端标记（可合并后删除）
+# Created for conflict drill; safe to remove after manual merge.
