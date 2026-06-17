@@ -492,4 +492,3 @@ secrets:
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
-FEISHU_HOME_CHANNEL: oc_26451a5c8065350656dbb0ee155789b9

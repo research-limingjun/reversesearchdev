@@ -13,7 +13,7 @@
 
 ## 队友安装
 
-提供本仓库 Git 地址，使用 `hermes-agent-distribution` skill 即可安装（无需提供 profile 名称）。
+提供本仓库 Git 地址，使用 `hermes-agent-distribution` skill 即可安装（无需提供 profile 名称）。通知群在 `.env` 配置 `FEISHU_HOME_CHANNEL`（每人不同，`./update.sh` 不会覆盖）。
 
 ## Distribution 同步（队友首次安装）
 

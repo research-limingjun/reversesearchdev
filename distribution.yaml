@@ -1,5 +1,5 @@
 name: reversesearchdev
-version: 1.0.26
+version: 1.0.27
 description: "reversesearch \u9879\u76EE Dev Agent \u2014 \u6280\u672F\u65B9\u6848\
   \u8BBE\u8BA1\u3001Codex/Cursor \u4EE3\u7801\u5B9E\u73B0\u3001\u98DE\u4E66\u534F\u4F5C"
 hermes_requires: '>=0.16.0'
@@ -36,6 +36,8 @@ env_requires:
   description: "\u98DE\u4E66\u57DF\u540D"
   required: false
   default: feishu
+- name: FEISHU_HOME_CHANNEL
+  description: "\u98DE\u4E66\u901A\u77E5\u7FA4 chat_id\uff08distribution \u540C\u6B65/cron \u8F93\u51FA\uff09\u3002\u5728\u76EE\u6807\u7FA4 @\u673A\u5668\u4EBA \u53D1\u9001 /set-home\uff0c\u6216\u4ECE\u7FA4\u8BBE\u7F6E\u590D\u5236 oc_ \u5F00\u5934\u7684 ID"
 - name: OPENAI_API_KEY
   description: "OpenAI \u517C\u5BB9 API Key\uFF08\u5907\u7528\uFF09"
   required: false

@@ -54,8 +54,7 @@ description: |
 ## 前置条件
 
 - `hermes -p reversesearchdev gateway start` 已运行（调度依赖 gateway）
-- `.env` 已配置 `FEISHU_APP_ID`、`FEISHU_APP_SECRET`
-- `config.yaml` 中 `FEISHU_HOME_CHANNEL` 已设置
+- `.env` 已配置 `FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`FEISHU_HOME_CHANNEL`（每人本地，不会被 update 覆盖）
 - 本机对 `distribution.yaml` 中 `source` 仓库有 push 权限（自动发布需要）
 
 ## 执行逻辑（由 agent-sync-watchdog.sh 实现）

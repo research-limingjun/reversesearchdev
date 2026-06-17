@@ -29,6 +29,7 @@ profile 名称由远端 `distribution.yaml` 的 `name:` 自动决定。
    - 从该目录的 `distribution.yaml` 读取 `name`、`env_requires`
 4. **检查 `.env`**
    - 对照 `env_requires` 列出缺失的必填变量（只列变量名与说明，不写示例密钥）
+   - 必填含 `FEISHU_HOME_CHANNEL`：每人填自己的通知群；在群内 `/set-home` 或复制 `oc_xxx`，**不在 `config.yaml`**
    - 有 `default` 的可说明将使用默认值
 5. **启动 gateway**
 

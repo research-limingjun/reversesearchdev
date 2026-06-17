@@ -57,7 +57,7 @@
 | 现象 | 原因 | 处理 |
 |------|------|------|
 | 任务从不触发 | gateway 未启动 | `hermes -p reversesearchdev gateway start` |
-| 执行失败 / 无飞书 | 飞书凭证或 channel 未配 | 检查 `.env` 与 `FEISHU_HOME_CHANNEL` |
+| 执行失败 / 无飞书 | 飞书凭证或 channel 未配 | 检查 `.env` 中 `FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`FEISHU_HOME_CHANNEL` |
 | 脚本找不到 | 配置档选错或脚本未同步 | 确认 profile 为 `reversesearchdev`，`./update.sh` 拉最新 |
 | 冲突告警 | 本机与远端同时有未合并改动 | 飞书五步：`checkout` 冲突分支 → `pull origin main --no-rebase` → push → GitHub PR |
 | 自动发布失败 | 无 push 权限或 git 错误 | 检查 SSH key 与 `publish.config` 的 `REMOTE` |

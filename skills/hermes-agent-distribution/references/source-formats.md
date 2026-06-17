@@ -41,7 +41,9 @@ hermes profile install <SOURCE> --alias -y
 ├── SOUL.md
 ├── skills/
 ├── update.sh             # 若发布者提供
-└── .env                  # 用户本地配置，不入 git
+└── .env                  # 用户本地配置（含 FEISHU_HOME_CHANNEL），不入 git
 ```
+
+`FEISHU_HOME_CHANNEL` 在 `.env`，不在 `config.yaml`；`./update.sh` 不会覆盖 `.env`。
 
 `name` 来自已安装 profile 的 `distribution.yaml`，不是用户输入。
