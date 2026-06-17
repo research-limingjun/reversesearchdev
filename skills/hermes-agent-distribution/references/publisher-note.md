@@ -4,12 +4,12 @@
 
 ## 为什么
 
-开发者安装你的 agent 时，只需：
+其他开发者安装你的 agent 时，只需：
 
 1. 绑定 `hermes-agent-distribution` skill（或从已安装的任意 distribution 中获得该 skill）
 2. 提供你的 Git 仓库地址
 
-无需手写 install 命令或记住 profile 名称。
+无需手写 install 命令或记住 profile 名称。优化后的 skill 含 `.env` 分组说明、验证步骤与安装完成报告模板，减少安装过程中的来回追问。
 
 ## 发布前检查
 
@@ -22,7 +22,7 @@
 `publish.sh` 末尾可输出：
 
 ```text
-开发者安装：提供 Git 地址 + hermes-agent-distribution skill
+其他开发者安装：提供 Git 地址 + hermes-agent-distribution skill
 或：hermes profile install <REMOTE> --alias -y
 ```
 

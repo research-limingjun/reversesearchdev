@@ -233,7 +233,7 @@ if git diff --cached --quiet; then
     _push_branch_and_tag
     echo ""
     echo "Published reversesearchdev@${VERSION}"
-    echo "  队友安装：提供 Git 地址 + hermes-agent-distribution skill"
+    echo "  其他开发者安装：提供 Git 地址 + hermes-agent-distribution skill"
     echo "  或：hermes profile install $REMOTE --alias -y"
     echo "  后续拉取：./update.sh"
     exit 0
@@ -251,6 +251,6 @@ _push_branch_and_tag
 
 echo ""
 echo "Published reversesearchdev@${VERSION}"
-echo "  队友安装：提供 Git 地址 + hermes-agent-distribution skill"
+echo "  其他开发者安装：提供 Git 地址 + hermes-agent-distribution skill"
 echo "  或：hermes profile install $REMOTE --alias -y"
 echo "  后续拉取：./update.sh"
