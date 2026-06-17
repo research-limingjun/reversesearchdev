@@ -1,0 +1,26 @@
+skills/hermes-agent-distribution/references/source-formats.md
+  s_dd0e372b0537c1::t_27356118672b9c 27-36
+skills/hermes-agent-distribution/references/env-setup.md
+  s_dd0e372b0537c1::t_5b1571b1124d95 1-62
+skills/hermes-agent-distribution/SKILL.md
+  s_dd0e372b0537c1::t_2762c87654c537 4-7,12-27,31-34,41-56,64-73,80-108,114,120-121
+skills/hermes-agent-distribution/references/publisher-note.md
+  s_dd0e372b0537c1::t_f5425f90815726 25
+  s_dd0e372b0537c1::t_da0145237ad637 7,12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d666033907d5e7ed87754c569748851f78a1a342",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
