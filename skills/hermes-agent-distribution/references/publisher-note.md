@@ -4,7 +4,7 @@
 
 ## 为什么
 
-队友安装你的 agent 时，只需：
+开发者安装你的 agent 时，只需：
 
 1. 绑定 `hermes-agent-distribution` skill（或从已安装的任意 distribution 中获得该 skill）
 2. 提供你的 Git 仓库地址
@@ -22,7 +22,7 @@
 `publish.sh` 末尾可输出：
 
 ```text
-队友安装：提供 Git 地址 + hermes-agent-distribution skill
+开发者安装：提供 Git 地址 + hermes-agent-distribution skill
 或：hermes profile install <REMOTE> --alias -y
 ```
 
@@ -33,6 +33,6 @@
 | Skill | 职责 |
 |-------|------|
 | `hermes-agent-distribution` | 首次安装 |
-| `agent-distribution-sync` | 已安装后的 12h 双向同步 |
+| `agent-distribution-sync` | 已安装后的双向同步 |
 
 两个 skill 互补，发布者均应保留。
