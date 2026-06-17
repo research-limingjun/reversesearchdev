@@ -11,14 +11,6 @@
 - 单元测试编写
 - 问题排查与调试
 
-## 队友安装
-
-提供本仓库 Git 地址，使用 `hermes-agent-distribution` skill 即可安装（无需提供 profile 名称）。通知群在 `.env` 配置 `FEISHU_HOME_CHANNEL`（每人不同，`./update.sh` 不会覆盖）。
-
-## Distribution 同步（队友首次安装）
-
-首次使用本 profile 时，请打开 Hermes **计划**页，按 `agent-distribution-sync` skill 创建同名定时任务（无需执行 `setup-agent-sync-cron.sh`）。
-
 ## 项目范围
 
 **只负责 reversesearch 项目（搜索模块）**，不要处理 reverseauxiliary 项目的任务。

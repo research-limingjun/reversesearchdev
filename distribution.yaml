@@ -1,45 +1,44 @@
 name: reversesearchdev
-version: 1.0.27
-description: "reversesearch \u9879\u76EE Dev Agent \u2014 \u6280\u672F\u65B9\u6848\
-  \u8BBE\u8BA1\u3001Codex/Cursor \u4EE3\u7801\u5B9E\u73B0\u3001\u98DE\u4E66\u534F\u4F5C"
+version: 1.0.28
+description: "reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作"
 hermes_requires: '>=0.16.0'
 author: reversesearch team
 license: internal
 env_requires:
 - name: XIAOMI_API_KEY
-  description: "\u5C0F\u7C73 Mimo \u6A21\u578B API Key"
+  description: "小米 Mimo 模型 API Key"
 - name: XIAOMI_BASE_URL
-  description: "\u5C0F\u7C73 Mimo API Base URL"
+  description: "小米 Mimo API Base URL"
   required: false
   default: https://token-plan-cn.xiaomimimo.com/v1
 - name: FEISHU_APP_ID
-  description: "\u98DE\u4E66\u5E94\u7528 App ID\uFF08Gateway \u63A5\u5165\uFF09"
+  description: "飞书应用 App ID（Gateway 接入）"
 - name: FEISHU_APP_SECRET
-  description: "\u98DE\u4E66\u5E94\u7528 App Secret"
+  description: "飞书应用 App Secret"
 - name: FEISHU_CONNECTION_MODE
-  description: "\u98DE\u4E66\u8FDE\u63A5\u6A21\u5F0F"
+  description: "飞书连接模式"
   required: false
   default: websocket
 - name: FEISHU_DM_POLICY
-  description: "\u98DE\u4E66\u79C1\u804A\u7B56\u7565"
+  description: "飞书私聊策略"
   required: false
   default: pairing
 - name: FEISHU_GROUP_POLICY
-  description: "\u98DE\u4E66\u7FA4\u804A\u7B56\u7565"
+  description: "飞书群聊策略"
   required: false
   default: open
 - name: FEISHU_ALLOW_ALL_USERS
-  description: "\u662F\u5426\u5141\u8BB8\u6240\u6709\u98DE\u4E66\u7528\u6237"
+  description: "是否允许所有飞书用户"
   required: false
   default: 'true'
 - name: FEISHU_DOMAIN
-  description: "\u98DE\u4E66\u57DF\u540D"
+  description: "飞书域名"
   required: false
   default: feishu
 - name: FEISHU_HOME_CHANNEL
-  description: "\u98DE\u4E66\u901A\u77E5\u7FA4 chat_id\uff08distribution \u540C\u6B65/cron \u8F93\u51FA\uff09\u3002\u5728\u76EE\u6807\u7FA4 @\u673A\u5668\u4EBA \u53D1\u9001 /set-home\uff0c\u6216\u4ECE\u7FA4\u8BBE\u7F6E\u590D\u5236 oc_ \u5F00\u5934\u7684 ID"
+  description: "飞书通知群 chat_id（distribution 同步/cron 输出）。在目标群 @机器人 发送 /set-home，或从群设置复制 oc_ 开头的 ID"
 - name: OPENAI_API_KEY
-  description: "OpenAI \u517C\u5BB9 API Key\uFF08\u5907\u7528\uFF09"
+  description: "OpenAI 兼容 API Key（备用）"
   required: false
 distribution_owned:
 - SOUL.md
