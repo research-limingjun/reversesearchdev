@@ -1,0 +1,19 @@
+SOUL.md
+  s_dd0e372b0537c1::t_3645c8cefe9688 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "6ec576d5b203ff8333af2eac5f668de1cad34f7c",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
