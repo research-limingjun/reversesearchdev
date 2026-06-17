@@ -13,7 +13,7 @@ description: |
 
 - **本机有未发布改动**且远端无新提交 → 自动 `./publish.sh` 推送
 - **远端有新版本**且本机干净 → `./update.sh` 拉取
-- **双方都有新改动**（分叉）→ 自动推 `distribution/Conflict_*` 分支 + 飞书五步操作通知
+- **双方都有新改动**（分叉）→ 可干净合并则自动 merge + `publish.sh`；Git 真冲突才推 `distribution/Conflict_*` + 飞书五步通知
 - **均无变化** → 静默
 
 `.env`、`memories/` 不会被覆盖。
@@ -64,18 +64,21 @@ description: |
 | 本地与远端均无变化 | 静默退出 | 不发 |
 | 仅本机有未发布改动 | 自动 `./publish.sh` | 发「已自动发布至 vX.X.X」+ 变更文件 |
 | 仅远端有新提交 | `./update.sh` | 发「Updated …@vX」 |
-| 本机与远端均有新改动（分叉） | `./update.sh`（自动 conflict 分支） | 发【Distribution】冲突通知 |
+| 本机与远端均有新改动（分叉，可干净合并） | `./update.sh`（`agent-divergence-merge.sh`） | 发「分叉已自动合并并发布至 vX」 |
+| 本机与远端均有新改动（Git merge 冲突） | `./update.sh`（`agent-conflict-branch.sh`） | 发【Distribution】冲突通知 |
 | publish / update 失败 | 不更新 state | 发错误摘要 |
 
 状态文件：`local/dist_sync_state.json`（本机专用，不入 git）
 
 ## 风险说明
 
-**所有安装了该 cron 的机器均会尝试自动 publish。** 冲突时会推 `distribution/Conflict_*` 分支并发飞书五步通知。
+**所有安装了该 cron 的机器均会尝试自动 publish。** 仅当 git merge 产生冲突时才推 `distribution/Conflict_*` 并发飞书五步通知。
 
 ## 冲突处理
 
-`CONFLICT_STRATEGY=distribution_branch`（默认）时自动 WIP commit → push 冲突分支 → reset 本机 main。
+分叉时先由 `agent-divergence-merge.sh` 试探 `git merge origin/main`；合并成功则自动 `publish.sh`。
+
+仅 **Git merge 冲突**（同一文件双方均改）时，`CONFLICT_STRATEGY=distribution_branch`（默认）才会 WIP commit → push `distribution/Conflict_*` → reset 本机 main。
 
 ```bash
 git fetch && git checkout distribution/Conflict_main_<...>
@@ -93,7 +96,7 @@ git pull origin main --no-rebase   # Diff 解决 → push → GitHub 合并 PR
 | 拉取最新 | `./update.sh` |
 | 发布改动 | `./publish.sh` |
 
-`./update.sh` 遇分叉冲突会自动执行 `agent-conflict-branch.sh`；飞书通知仍由 12h cron 投递。
+`./update.sh` 遇分叉先自动合并；仅 merge 失败时执行 `agent-conflict-branch.sh`；飞书通知仍由 12h cron 投递。
 
 ## CLI 备用（Power User）
 

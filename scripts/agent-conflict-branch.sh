@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Create distribution/Conflict_* branch on sync conflict; reset main; print Feishu-ready notice.
-# Called by agent-sync-watchdog.sh when CONFLICT_STRATEGY=distribution_branch.
+# Create distribution/Conflict_* branch when git merge fails after divergence; reset main; print Feishu notice.
+# Called by update.sh only after agent-divergence-merge.sh exits 2 (real merge conflict).
 set -euo pipefail
 
 PROFILE_NAME="${PROFILE_NAME:-reversesearchdev}"

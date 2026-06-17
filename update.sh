@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Pull latest reversesearchdev distribution (hermes profile update).
-# On sync conflict, automatically runs agent-conflict-branch.sh.
+# On divergence: try auto-merge + publish; on merge conflict, agent-conflict-branch.sh.
 #
 # Usage: ./update.sh
 set -euo pipefail
@@ -201,7 +201,7 @@ if [[ -n "$LOCAL_DIRTY" ]] || [[ "${LOCAL_AHEAD:-0}" -gt 0 ]]; then
   LOCAL_NEEDS_PUBLISH=true
 fi
 
-# Conflict: delegate to agent-conflict-branch.sh
+# Divergence: try clean merge + publish first; real merge conflicts → conflict branch
 if [[ "$LOCAL_NEEDS_PUBLISH" == true ]] && [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; then
   LOCAL_HEAD="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
   REMOTE_HEAD="$(git rev-parse --short "origin/$BRANCH" 2>/dev/null || echo unknown)"
@@ -214,10 +214,23 @@ if [[ "$LOCAL_NEEDS_PUBLISH" == true ]] && [[ "${REMOTE_AHEAD:-0}" -gt 0 ]]; the
     export CONFLICT_LOCAL_HEAD="$LOCAL_HEAD"
     export CONFLICT_REMOTE_HEAD="$REMOTE_HEAD"
     export CONFLICT_REMOTE_AHEAD="$REMOTE_AHEAD"
+    chmod +x "$PROFILE_DIR/scripts/agent-divergence-merge.sh"
     chmod +x "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
-    exec "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
+    set +e
+    MERGE_OUTPUT="$("$PROFILE_DIR/scripts/agent-divergence-merge.sh" 2>&1)"
+    MERGE_EXIT=$?
+    set -e
+    if [[ "$MERGE_EXIT" -eq 0 ]]; then
+      printf '%s\n' "$MERGE_OUTPUT"
+      exit 0
+    fi
+    if [[ "$MERGE_EXIT" -eq 2 ]]; then
+      exec "$PROFILE_DIR/scripts/agent-conflict-branch.sh"
+    fi
+    printf '%s\n' "$MERGE_OUTPUT" >&2
+    exit 1
   fi
-  echo "[${PROFILE_NAME}] 配置同步冲突，需人工介入" >&2
+  echo "[${PROFILE_NAME}] 配置同步分叉，需人工介入" >&2
   echo "本机未发布: ${LOCAL_DESC}" >&2
   echo "远端领先 ${REMOTE_AHEAD} 个提交 (${LOCAL_HEAD}..${REMOTE_HEAD})" >&2
   exit 1
