@@ -1,0 +1,32 @@
+scripts/agent-conflict-branch.sh
+  s_dd0e372b0537c1::t_a784f7f8ff6219 2-3
+scripts/agent-divergence-merge.sh
+  s_dd0e372b0537c1::t_21e66ea7b87423 1-235,237-258
+  s_dd0e372b0537c1::t_ac2f6733421a30 236
+skills/agent-distribution-sync/SKILL.md
+  s_dd0e372b0537c1::t_59f60bfa74265b 67-68
+  s_dd0e372b0537c1::t_83813a6e1ca680 75,79-81
+  s_dd0e372b0537c1::t_78a8ddca033836 16
+  s_dd0e372b0537c1::t_94a5737f620238 99
+skills/agent-distribution-sync/references/ui-setup.md
+  s_dd0e372b0537c1::t_6693084df5d1c7 46-47
+update.sh
+  s_dd0e372b0537c1::t_eeee6fff94190c 204,217,219-231,233
+  s_dd0e372b0537c1::t_1ea9ce53f4b626 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "8ee3b959caf8bdf7934b8a3567a1cd8ec4f35085",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "mingjun.li <mingjun.li@ly.com>"
+    }
+  }
+}
