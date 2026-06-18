@@ -1,0 +1,23 @@
+skills/hermes-distribution/references/env-setup.md
+  s_dd0e372b0537c1::t_17009557f1b239 3,5,14,16,18,24,36,38-54,63
+distribution.yaml
+  s_dd0e372b0537c1::t_4fac53606c4986 34-40,42
+skills/hermes-distribution/references/install.md
+  s_dd0e372b0537c1::t_4d93981d2d519e 15,17-20,32,35,44,48-55,64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ba465e0585c5e7c3fb2ad6f4089a1290f8319137",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "research-limingjun <research-limingjun@users.noreply.github.com>"
+    }
+  }
+}
