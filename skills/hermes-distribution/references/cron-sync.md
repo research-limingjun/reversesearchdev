@@ -11,7 +11,37 @@
 | 仅远端有新提交 | `update.sh` | 发「Updated …@vX」 |
 | 分叉可合并 | merge + publish | 发「分叉已自动合并并发布」 |
 | Git merge 冲突 | 推 `distribution/Conflict_*` | 发【Distribution】冲突通知 |
-| 失败 | 不更新 state | 发错误摘要 |
+| 失败 | 写入 `local/dist_sync_state.json` 的 `last_cron_error_*` | 发「定时同步失败」+ 错误摘要（stdout） |
+
+## 失败时去哪看
+
+no-agent cron **靠脚本 stdout 投递飞书**。失败时脚本会输出明确文案（不再仅写 stderr）。
+
+```bash
+# 1. 手动复现
+hermes -p <name> cron run <job_id>
+
+# 2. 磁盘输出存档
+ls ~/.hermes/profiles/<name>/cron/output/<job_id>/
+
+# 3. 任务状态（含 last_error、last_delivery_error）
+hermes -p <name> cron list
+
+# 4. 本地审计（即使飞书投递失败也有记录）
+cat ~/.hermes/profiles/<name>/local/dist_sync_state.json
+
+# 5. Gateway 必须运行，否则定时器不触发
+hermes -p <name> gateway status
+```
+
+| 情况 | 飞书 | 说明 |
+|------|------|------|
+| 同步失败（exit 1） | **应收到** | stdout 含「distribution 定时同步失败」 |
+| 无变更（`[SILENT]`） | 不发 | 正常 |
+| 投递失败 | 不发 | 查 `cron list` 的 `last_delivery_error`、`.env` 飞书三项 |
+| Desktop 运行记录 0 条 | — | no-agent 已知限制；以 `cron/output/` 与 `dist_sync_state.json` 为准 |
+
+完整操作手册 → [user-guide.md](user-guide.md)
 
 ## 路径 A：脚本模式（推荐）
 

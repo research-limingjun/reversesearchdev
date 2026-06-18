@@ -47,6 +47,7 @@ skills/hermes-distribution/scripts/setup-cron.sh
 
 ## 详细文档
 
+- **操作使用文档（使用者推荐阅读）** → [user-guide.md](references/user-guide.md)
 - 初始化脚手架 → [init.md](references/init.md)
 - 其他开发者安装 → [install.md](references/install.md)
 - 发布 → [publish.md](references/publish.md)
