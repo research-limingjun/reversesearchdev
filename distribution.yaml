@@ -1,5 +1,5 @@
 name: reversesearchdev
-version: 1.0.34
+version: 1.0.35
 description: "reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作"
 hermes_requires: '>=0.16.0'
 author: reversesearch team

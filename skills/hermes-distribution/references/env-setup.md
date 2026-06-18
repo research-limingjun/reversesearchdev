@@ -2,14 +2,19 @@
 
 安装完成后，在 profile 目录配置本地环境变量。`.env` **不入 git**，`update.sh` **不会覆盖**。
 
+**唯一权威清单**：`distribution.yaml` 的 `env_requires`（无 `.env.EXAMPLE`）。
+
 ## 初始化
 
 ```bash
 cd ~/.hermes/profiles/<name>
-cp .env.EXAMPLE .env
+# 若 .env 不存在，创建空文件后按 env_requires 逐项填写
+touch .env
 ```
 
-以 `distribution.yaml` 的 `env_requires` 为准；下面为常见分组（具体以已安装 manifest 为准）。
+Agent 安装时：从 `env_requires` 列出必填项（`required` 非 false 且无 `default`），引导用户写入 `.env`；只列变量名与说明，**不写真实密钥**。
+
+下面为常见分组（具体以已安装 manifest 的 `env_requires` 为准）。
 
 ## 必填分组
 

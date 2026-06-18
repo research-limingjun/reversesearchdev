@@ -14,7 +14,7 @@ hermes profile install <SOURCE> --alias -y
 
 3. **进入 profile 目录**，读取 `distribution.yaml` 的 `name`、`version`、`env_requires`
 
-4. **配置 `.env`**：`cp .env.EXAMPLE .env`，对照 `env_requires` 填写 → [env-setup.md](env-setup.md)
+4. **配置 `.env`**：读 `env_requires`，若本机无 `.env` 则创建并逐项填写（**禁止**猜测密钥）→ [env-setup.md](env-setup.md)
 
 5. **启动 gateway**：`hermes -p <name> gateway start`
 

@@ -30,7 +30,6 @@ skills/hermes-distribution/scripts/init-distribution.sh --name <name>
 | `distribution.yaml` | name、version 1.0.0、`publish:` 块、`distribution_owned` |
 | `SOUL.md` | 占位 |
 | `config.yaml` | 可选骨架 |
-| `.env.EXAMPLE` | 环境变量模板 |
 | `.gitignore` | `.env`、`local/`、`cron/` 等 |
 | `skills/hermes-distribution/` | 本 skill（bootstrap） |
 | `scripts/agent-sync-watchdog.sh` | cron 入口（调用 skill 内逻辑） |
@@ -41,8 +40,8 @@ skills/hermes-distribution/scripts/init-distribution.sh --name <name>
 ## init 完成后告知用户
 
 1. 在 GitHub 创建空仓库（若尚无）
-2. 编辑 `SOUL.md`、`distribution.yaml` 的 `env_requires`
-3. 配置 `.env`（见 [env-setup.md](env-setup.md)）
+2. 编辑 `SOUL.md`、`distribution.yaml` 的 `env_requires`（环境变量唯一清单）
+3. 在本机配置 `.env`（对照 `env_requires`，见 [env-setup.md](env-setup.md)）
 4. **首次发布**（写入 `source:` 并推送）：
 
 ```bash

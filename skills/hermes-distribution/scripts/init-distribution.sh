@@ -88,11 +88,6 @@ cat > "$PROFILE_DIR/config.yaml" <<'EOF'
 # Hermes profile config (optional overrides)
 EOF
 
-cat > "$PROFILE_DIR/.env.EXAMPLE" <<'EOF'
-# Copy to .env and fill in values (never commit .env)
-# FEISHU_HOME_CHANNEL=oc_xxxxxxxx
-EOF
-
 cat > "$PROFILE_DIR/.gitignore" <<'EOF'
 .env
 auth.json
@@ -144,10 +139,11 @@ Scaffold created: $PROFILE_DIR
 
 Next steps:
   1. Create an empty Git repository (if needed)
-  2. Configure .env (see skills/hermes-distribution/references/env-setup.md)
-  3. First publish:
+  2. Edit SOUL.md and distribution.yaml env_requires (env variable manifest)
+  3. Configure local .env per env_requires (see skills/hermes-distribution/references/env-setup.md)
+  4. First publish:
      skills/hermes-distribution/scripts/publish.sh <git-remote-url>
-  4. Optional 12h sync:
+  5. Optional 12h sync:
      skills/hermes-distribution/scripts/setup-cron.sh
 
 EOF

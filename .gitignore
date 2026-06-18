@@ -1,7 +1,6 @@
 # Credentials & secrets
 .env
 .env.*
-!.env.EXAMPLE
 auth.json
 auth.lock
 
