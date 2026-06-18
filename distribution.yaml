@@ -1,16 +1,10 @@
 name: reversesearchdev
-version: 1.0.35
+version: 1.0.36
 description: "reversesearch 项目 Dev Agent — 技术方案设计、Codex/Cursor 代码实现、飞书协作"
 hermes_requires: '>=0.16.0'
 author: reversesearch team
 license: internal
 env_requires:
-- name: XIAOMI_API_KEY
-  description: "小米 Mimo 模型 API Key"
-- name: XIAOMI_BASE_URL
-  description: "小米 Mimo API Base URL"
-  required: false
-  default: https://token-plan-cn.xiaomimimo.com/v1
 - name: FEISHU_APP_ID
   description: "飞书应用 App ID（Gateway 接入）"
 - name: FEISHU_APP_SECRET
@@ -37,8 +31,15 @@ env_requires:
   default: feishu
 - name: FEISHU_HOME_CHANNEL
   description: "飞书通知群 chat_id（distribution 同步/cron 输出）。在目标群 @机器人 发送 /set-home，或从群设置复制 oc_ 开头的 ID"
+- name: XIAOMI_API_KEY
+  description: "小米 Mimo API Key（仅当 config.yaml provider 为 xiaomi 时需要）"
+  required: false
+- name: XIAOMI_BASE_URL
+  description: "小米 Mimo API Base URL"
+  required: false
+  default: https://token-plan-cn.xiaomimimo.com/v1
 - name: OPENAI_API_KEY
-  description: "OpenAI 兼容 API Key（备用）"
+  description: "OpenAI 兼容 API Key（provider 为 openai/openrouter 等时需要）"
   required: false
 publish:
   branch: main
