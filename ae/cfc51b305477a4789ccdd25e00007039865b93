@@ -1,0 +1,28 @@
+skills/hermes-distribution/scripts/agent-conflict-branch.sh
+  s_dd0e372b0537c1::t_31153d18a3569a 275,278
+  s_dd0e372b0537c1::t_04c83a560b8af2 194,202
+  s_dd0e372b0537c1::t_f3fb22f17b25d4 139,141
+  s_dd0e372b0537c1::t_5852ceb6a1f2ea 251-252
+skills/hermes-distribution/references/source-formats.md
+  s_dd0e372b0537c1::t_7d63fc45cb6bb4 12,15
+skills/hermes-distribution/references/update.md
+  s_dd0e372b0537c1::t_5097a62603ac4b 42,45-47
+skills/hermes-distribution/scripts/_lib.sh
+  s_dd0e372b0537c1::t_2fe4346768d617 78-121
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "aecfc51b305477a4789ccdd25e00007039865b93",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "research-limingjun <research-limingjun@users.noreply.github.com>"
+    }
+  }
+}
