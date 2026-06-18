@@ -39,10 +39,12 @@ skills/hermes-distribution/scripts/update.sh
 ```bash
 git fetch
 git checkout distribution/Conflict_main_<host>_<ts>
-git pull origin main --no-rebase   # 解决冲突 → push → GitHub PR
+git pull origin main --no-rebase   # 解决冲突 → push → Git 平台合并请求（MR/PR）
 ```
 
-合并 PR 后，其他机器下次 `update.sh` 或 cron 自动拉取。
+合并 PR/MR 后，其他机器下次 `update.sh` 或 cron 自动拉取。
+
+飞书通知第 5 步会给出可点击的图形化合并链接：GitHub 为 compare URL，GitLab（如 `git.17usoft.com`）为新建 MR 链接。
 
 ## 常见错误
 

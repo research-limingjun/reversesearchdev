@@ -75,3 +75,47 @@ if not url:
 print(url)
 PY
 }
+
+_hd_git_merge_web_url() {
+  local remote_url="$1" base_branch="$2" head_branch="$3"
+  python3 - "$remote_url" "$base_branch" "$head_branch" <<'PY'
+import sys
+from urllib.parse import quote, urlencode
+
+remote = sys.argv[1].strip()
+base_branch = sys.argv[2]
+head_branch = sys.argv[3]
+
+HTTP_HOSTS = {"git.17usoft.com"}
+
+
+def web_base(url: str) -> tuple[str, str]:
+    """Return (web_base_url, host) for a git remote."""
+    if url.startswith("git@"):
+        host_path = url[4:]
+        host, _, path = host_path.partition(":")
+        path = path.removesuffix(".git")
+        scheme = "http" if host in HTTP_HOSTS else "https"
+        return f"{scheme}://{host}/{path}", host
+    if url.startswith("http://") or url.startswith("https://"):
+        base = url.removesuffix(".git")
+        host = base.split("://", 1)[1].split("/", 1)[0]
+        return base, host
+    raise ValueError(f"unsupported git remote: {url}")
+
+
+repo, host = web_base(remote)
+
+if host == "github.com":
+    head_enc = quote(head_branch, safe="")
+    print(f"{repo}/compare/{base_branch}...{head_enc}?expand=1")
+else:
+    query = urlencode(
+        {
+            "merge_request[source_branch]": head_branch,
+            "merge_request[target_branch]": base_branch,
+        }
+    )
+    print(f"{repo}/-/merge_requests/new?{query}")
+PY
+}

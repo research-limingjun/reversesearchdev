@@ -136,27 +136,9 @@ _generate_branch_name() {
   echo "${CONFLICT_BRANCH_PREFIX}_${BRANCH}_${host}_${ts}"
 }
 
-_github_compare_url() {
+_merge_web_url() {
   local remote_url="$1" conflict_branch="$2"
-  python3 - "$remote_url" "$BRANCH" "$conflict_branch" <<'PY'
-import sys
-from urllib.parse import quote
-
-remote = sys.argv[1].strip()
-base_branch = sys.argv[2]
-head_branch = sys.argv[3]
-
-if remote.startswith("git@github.com:"):
-    path = remote.split(":", 1)[1].removesuffix(".git")
-    repo = f"https://github.com/{path}"
-elif remote.startswith("https://github.com/"):
-    repo = remote.removesuffix(".git")
-else:
-    repo = remote.removesuffix(".git")
-
-head_enc = quote(head_branch, safe="")
-print(f"{repo}/compare/{base_branch}...{head_enc}?expand=1")
-PY
+  _hd_git_merge_web_url "$remote_url" "$BRANCH" "$conflict_branch"
 }
 
 _try_gh_pr_url() {
@@ -209,7 +191,7 @@ Git项目： ${GIT_REMOTE}
 4. 解决冲突后推送冲突分支
    git push origin ${conflict_branch}
 
-5. 在 GitHub 发起合并（图形化界面，推荐）
+5. 在 Git 平台发起合并请求（图形化界面，推荐）
    ${compare_url}
 EOF
   if [[ -n "$pr_url" ]]; then
@@ -217,7 +199,7 @@ EOF
   fi
   cat <<EOF
 
-说明：本机 main 已恢复为远端最新，Agent 可继续运行；合并 PR 后其他机器将自动 pull。
+说明：本机 main 已恢复为远端最新，Agent 可继续运行；合并 PR/MR 后其他机器将自动 pull。
 EOF
 }
 
@@ -266,8 +248,8 @@ fi
 
 if [[ -n "$PENDING_BRANCH" && "$PENDING_LOCAL_SHA" == "$CURRENT_LOCAL_SHA" && "$PENDING_REMOTE_SHA" == "$REMOTE_SHA" ]]; then
   if git ls-remote --exit-code origin "refs/heads/$PENDING_BRANCH" &>/dev/null; then
-    COMPARE_URL="$(_github_compare_url "$GIT_REMOTE" "$PENDING_BRANCH")"
-    _emit_distribution_notice "$PENDING_BRANCH" "$LOCAL_DESC" "$COMPARE_URL" ""
+    MERGE_URL="$(_merge_web_url "$GIT_REMOTE" "$PENDING_BRANCH")"
+    _emit_distribution_notice "$PENDING_BRANCH" "$LOCAL_DESC" "$MERGE_URL" ""
     exit 0
   fi
 fi
@@ -290,7 +272,7 @@ git reset --hard "origin/$BRANCH"
 
 _write_conflict_state "$CONFLICT_BRANCH" "$CURRENT_LOCAL_SHA" "$REMOTE_SHA"
 
-COMPARE_URL="$(_github_compare_url "$GIT_REMOTE" "$CONFLICT_BRANCH")"
+MERGE_URL="$(_merge_web_url "$GIT_REMOTE" "$CONFLICT_BRANCH")"
 PR_URL="$(_try_gh_pr_url "$CONFLICT_BRANCH" || true)"
 
-_emit_distribution_notice "$CONFLICT_BRANCH" "$LOCAL_DESC" "$COMPARE_URL" "$PR_URL"
+_emit_distribution_notice "$CONFLICT_BRANCH" "$LOCAL_DESC" "$MERGE_URL" "$PR_URL"
