@@ -23,7 +23,7 @@ skills/hermes-distribution/scripts/update.sh
 ## 分叉处理
 
 1. **可干净合并**：自动 `git merge origin/<branch>` → `publish.sh` → 飞书通知（cron 场景）
-2. **Git merge 冲突**：`agent-conflict-branch.sh` 推 `distribution/Conflict_*` 分支 → 飞书五步通知
+2. **Git merge 冲突**：`agent-conflict-branch.sh` 推 `distribution/Conflict_*` 分支 → 飞书四步操作通知
 3. **`alert_only` 策略**（`publish.conflict_strategy`）：仅文字告警，不推冲突分支
 
 冲突配置在 `distribution.yaml` 的 `publish:` 块。
@@ -42,9 +42,7 @@ git checkout distribution/Conflict_main_<host>_<ts>
 git pull origin main --no-rebase   # 解决冲突 → push → Git 平台合并请求（MR/PR）
 ```
 
-合并 PR/MR 后，其他机器下次 `update.sh` 或 cron 自动拉取。
-
-飞书通知第 5 步会给出可点击的图形化合并链接：GitHub 为 compare URL，GitLab（如 `git.17usoft.com`）为新建 MR 链接。
+合并进目标分支后，其他机器下次 `update.sh` 或 cron 自动拉取。
 
 ## 常见错误
 

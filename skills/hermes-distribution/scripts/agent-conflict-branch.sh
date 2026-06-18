@@ -136,38 +136,8 @@ _generate_branch_name() {
   echo "${CONFLICT_BRANCH_PREFIX}_${BRANCH}_${host}_${ts}"
 }
 
-_merge_web_url() {
-  local remote_url="$1" conflict_branch="$2"
-  _hd_git_merge_web_url "$remote_url" "$BRANCH" "$conflict_branch"
-}
-
-_try_gh_pr_url() {
-  local conflict_branch="$1"
-  command -v gh &>/dev/null || return 1
-  gh auth status &>/dev/null 2>&1 || return 1
-  gh pr create \
-    --base "$BRANCH" \
-    --head "$conflict_branch" \
-    --title "distribution sync conflict: ${conflict_branch##*/}" \
-    --body "Auto-created by agent-conflict-branch.sh for ${PROFILE_NAME}." \
-    2>/dev/null || return 1
-}
-
-_emit_fallback_notice() {
-  local local_desc="$1" local_head="$2" remote_head="$3" remote_ahead="$4" remote_url="$5"
-  cat <<EOF
-[${PROFILE_NAME}] 配置同步冲突，需人工介入（冲突分支推送失败）
-本机未发布: ${local_desc}
-远端领先 ${remote_ahead} 个提交 (${local_head}..${remote_head})
-建议:
-  1) 手动创建分支并 push 后按 distribution 冲突流程合并
-  2) 放弃本机改动: git stash && skills/hermes-distribution/scripts/update.sh
-远端: ${remote_url}
-EOF
-}
-
 _emit_distribution_notice() {
-  local conflict_branch="$1" local_changes="$2" compare_url="$3" pr_url="${4:-}"
+  local conflict_branch="$1" local_changes="$2"
   cat <<EOF
 【Distribution】配置合并冲突通知
 
@@ -191,15 +161,20 @@ Git项目： ${GIT_REMOTE}
 4. 解决冲突后推送冲突分支
    git push origin ${conflict_branch}
 
-5. 在 Git 平台发起合并请求（图形化界面，推荐）
-   ${compare_url}
+说明：本机 main 已恢复为远端最新，Agent 可继续运行；冲突分支合并进 ${BRANCH} 后其他机器将自动 pull。
 EOF
-  if [[ -n "$pr_url" ]]; then
-    echo "   PR: ${pr_url}"
-  fi
-  cat <<EOF
+}
 
-说明：本机 main 已恢复为远端最新，Agent 可继续运行；合并 PR/MR 后其他机器将自动 pull。
+_emit_fallback_notice() {
+  local local_desc="$1" local_head="$2" remote_head="$3" remote_ahead="$4" remote_url="$5"
+  cat <<EOF
+[${PROFILE_NAME}] 配置同步冲突，需人工介入（冲突分支推送失败）
+本机未发布: ${local_desc}
+远端领先 ${remote_ahead} 个提交 (${local_head}..${remote_head})
+建议:
+  1) 手动创建分支并 push 后按 distribution 冲突流程合并
+  2) 放弃本机改动: git stash && skills/hermes-distribution/scripts/update.sh
+远端: ${remote_url}
 EOF
 }
 
@@ -248,8 +223,7 @@ fi
 
 if [[ -n "$PENDING_BRANCH" && "$PENDING_LOCAL_SHA" == "$CURRENT_LOCAL_SHA" && "$PENDING_REMOTE_SHA" == "$REMOTE_SHA" ]]; then
   if git ls-remote --exit-code origin "refs/heads/$PENDING_BRANCH" &>/dev/null; then
-    MERGE_URL="$(_merge_web_url "$GIT_REMOTE" "$PENDING_BRANCH")"
-    _emit_distribution_notice "$PENDING_BRANCH" "$LOCAL_DESC" "$MERGE_URL" ""
+    _emit_distribution_notice "$PENDING_BRANCH" "$LOCAL_DESC"
     exit 0
   fi
 fi
@@ -272,7 +246,4 @@ git reset --hard "origin/$BRANCH"
 
 _write_conflict_state "$CONFLICT_BRANCH" "$CURRENT_LOCAL_SHA" "$REMOTE_SHA"
 
-MERGE_URL="$(_merge_web_url "$GIT_REMOTE" "$CONFLICT_BRANCH")"
-PR_URL="$(_try_gh_pr_url "$CONFLICT_BRANCH" || true)"
-
-_emit_distribution_notice "$CONFLICT_BRANCH" "$LOCAL_DESC" "$MERGE_URL" "$PR_URL"
+_emit_distribution_notice "$CONFLICT_BRANCH" "$LOCAL_DESC"
