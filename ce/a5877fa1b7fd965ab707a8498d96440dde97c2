@@ -1,0 +1,25 @@
+skills/hermes-distribution/references/cron-sync.md
+  s_dd0e372b0537c1::t_3da0795b6838f7 14-44
+skills/hermes-distribution/scripts/agent-sync-watchdog-core.sh
+  s_dd0e372b0537c1::t_4aa7dd5c2c4a1c 14,16,22-101,133-141,144-145,269-274,289,302-303,310-311,319-320,345-346
+skills/hermes-distribution/SKILL.md
+  s_dd0e372b0537c1::t_abcbc6c031070e 50
+skills/hermes-distribution/references/user-guide.md
+  s_dd0e372b0537c1::t_9f8dbadd5bd813 1-103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "cea5877fa1b7fd965ab707a8498d96440dde97c2",
+  "prompts": {},
+  "sessions": {
+    "s_dd0e372b0537c1": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f62e5f6a-36a1-4061-9411-1eb4092a0862",
+        "model": "composer-2.5"
+      },
+      "human_author": "research-limingjun <research-limingjun@users.noreply.github.com>"
+    }
+  }
+}
